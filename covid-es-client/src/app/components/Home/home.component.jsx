@@ -1,9 +1,21 @@
-import React from 'react'
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-export default function home() {
+import Header from '../header/Header';
+import SideNav from '../sidenav/SideNav';
+import Statistics from './Statistics/Statistics';
+
+export default function Home() {
     return (
-        <div>
-            
+        <div >
+            <Header/>
+            <SideNav/>
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path={"/"} component={Statistics}/>
+                </Switch>
+            </BrowserRouter>
         </div>
+    
     )
 }
