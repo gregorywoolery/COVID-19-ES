@@ -34,7 +34,6 @@
 
 @media screen and (max-width: 768px){
     .header {
-        border: 1px solid red;
         height: calc(var(--header-height) + 1rem);
         padding: 0 2rem 0 6rem;
     }

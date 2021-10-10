@@ -13,19 +13,19 @@ export default function SideNav() {
                 <div> 
                     <div href="#" className="nav_logo"></div>
                     <div className="nav_list"> 
-                        <Link to='/' className="nav_link">
+                        <Link to='/Facts' className="nav_link">
                             <img src={book} alt="" className="nav_icon"/>
                             <span className="nav_name">Add Facts</span>                             
                         </Link>
-                        <Link to='/' className="nav_link">
+                        <Link to='/Varitant/Mu' className="nav_link">
                             <img src={coronavirus} alt="" className="nav_icon"/>
                             <span className="nav_name">Variant</span> 
                         </Link>
-                        <Link to='/' className="nav_link">
+                        <Link to='/Patient-Diagnosis' className="nav_link">
                             <img src={patient} alt="" className="nav_icon"/>
                             <span className="nav_name">Diagnose Patient</span> 
                         </Link>
-                        <Link to='/' className="nav_link">
+                        <Link to='/Statistics' className="nav_link">
                             <img src={analytics} alt="" className="nav_icon"/>
                             <span className="nav_name">Statistics</span> 
                         </Link>

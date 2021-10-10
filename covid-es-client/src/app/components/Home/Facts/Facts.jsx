@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Statistics() {
+export default function Facts() {
     return (
         <>
-            <h4>Statistics</h4>
+            <h4>Add Facts</h4>
         </>
     )
 }
