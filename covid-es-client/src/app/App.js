@@ -4,7 +4,7 @@ import './App.css';
 import Header from '../app/components/header/Header';
 import SideNav from '../app/components/sidenav/SideNav';
 import CovidVariant from './components/Home/CovidVariant/CovidVariant';
-import Dashboard from './components/Home/Dashboard/Dashboard';
+import Dashboard from './components/Home/Dashboard/Dashboard'
 import Facts from './components/Home/Facts/Facts';
 import PatientDiagnosis from './components/Home/PatientDiagnosis/PatientDiagnosis';
 import Statistics from './components/Home/Statistics/Statistics';
@@ -17,7 +17,7 @@ function App() {
           <Header/>
           <SideNav/>
           <div className="app-container">
-            <Route exact path={"/"} component={Dashboard}/>
+            <Route exact path={["/","/Dashboard"]} component={Dashboard}/>
             <Route exact path={"/Facts"} component={Facts}/>
             <Route exact path={"/Statistics"} component={Statistics}/>
             <Route exact path={"/Patient-Diagnosis"} component={PatientDiagnosis}/>

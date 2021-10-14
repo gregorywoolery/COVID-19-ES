@@ -14,3 +14,8 @@ cd api
 pip install -r requirement.txt
 
 python main.py
+
+
+OR
+cd covid-es-api/api
+python main.py
