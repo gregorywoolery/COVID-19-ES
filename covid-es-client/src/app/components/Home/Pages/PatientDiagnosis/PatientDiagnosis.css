@@ -1,24 +1,35 @@
 .content-container{
-    margin: 0 0 3rem 10%;
-    /* padding: 0rem; */
-    border-radius: .3rem;
-    border: 1px solid var(--first-color);
-    width: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .content-container-header{
-    border-radius: .3rem .3 0 0;
-    font-size: 1.5rem;
+    background-image: url(../../../../../assets/online-doctor.svg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    z-index: 0;
+    height: 5rem;
     font-weight: bold;
     display: flex;
-    justify-content: center;
     width: 100%;
     background-color: var(--first-color);
     color: #fff;
+    border-radius: .3rem;
+    padding: 2rem;
 }
 
 .content-container-content{
+    border-left: 3px solid var(--first-color);
+    border-right: 3px solid var(--first-color);
+    margin: 1rem 0;
+    border-radius: .3rem;
     padding: 2rem;
+    width: 60%;
+    box-shadow: 2px 3px 10px #00000048;
 }
 
 .form-control{
@@ -49,6 +60,7 @@
 }
 
 .form-action-buttons button{
+    background-color: var(--first-color);
     width: 10rem;
 }
 
