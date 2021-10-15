@@ -8,25 +8,28 @@ import Dashboard from './components/Home/Dashboard/Dashboard'
 import Facts from './components/Home/Facts/Facts';
 import PatientDiagnosis from './components/Home/PatientDiagnosis/PatientDiagnosis';
 import Statistics from './components/Home/Statistics/Statistics';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 function App() {
   return (
     <BrowserRouter>
-      <Switch>
-        <div>
-          <Header/>
-          <SideNav/>
-          <div className="app-container">
+      <div>
+        <Header/>
+        <SideNav/>
+        <div className="app-container">
+          <Switch>
             <Route exact path={["/","/Dashboard"]} component={Dashboard}/>
             <Route exact path={"/Facts"} component={Facts}/>
             <Route exact path={"/Statistics"} component={Statistics}/>
             <Route exact path={"/Patient-Diagnosis"} component={PatientDiagnosis}/>
             <Route exact path={"/Variant/Delta"} component={CovidVariant}/>
             <Route exact path={"/Varitant/Mu"} component={CovidVariant}/>
-          </div>
+          </Switch>
         </div>
-      </Switch>
-  </BrowserRouter>
+      </div>
+    </BrowserRouter>
   );
 }
 

@@ -1,0 +1,104 @@
+/* DIALOG BOX IN PROFILE */
+.dialog-modal-header *{
+    background-color: var(--first-color) !important;
+}
+.dialog-modal-header{
+    display: flex;
+    justify-content: space-between;
+    display: flex !important;
+    height: 2rem !important;
+    color: #fff;
+    background-color: var(--first-color) !important;
+    padding: .3rem 1.5rem;
+}
+
+.dialog-question-img{
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    object-fit: cover;
+    width: 3rem;
+    height:3rem;
+    display: flex;
+    margin-left: 8rem;
+    justify-content: center;
+    background:url(../../../../assets/magnifying-glass.svg);
+    background-size: cover;
+}
+
+.dialog-modal-content{
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-title{
+    font-weight: bold;
+    margin: 2rem 0rem 3rem !important;
+    display: flex;
+    justify-content: center;
+    color: #58595A;
+}
+
+.dialog-title-success{
+    font-weight: bold;
+    margin: 0rem 0rem 3rem !important;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: #58595A;
+}
+
+.dialog-title > span{
+    font-size: 12px !important; 
+}
+
+.dialog-title-success > span{
+    margin-top: .5rem;
+}
+
+.dialog-button-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dialog-button-container-center{
+    justify-content: center;
+}
+
+.dialog-button{
+    border: none;
+    height: 2.2rem;
+    width: 7rem !important;
+    border-radius: .3rem;
+    color: #fff;
+    font-size: 11px;
+}
+
+.dialog-close-button{
+    cursor: pointer;
+}
+
+.dialog-confirm-button{
+    background-color: #61eb34 !important;
+}
+
+.dialog-cancel-button{
+    background-color: #8D8D8D !important;
+}
+
+.dialog-failed-button{
+    background-color: #d32727 !important;
+}
+
+.dialog-icon{
+    height: 4rem;
+    width: 4rem;
+}
+
+.button-loading{
+    width: 10rem;
+    display: flex;
+    justify-content: center;
+}

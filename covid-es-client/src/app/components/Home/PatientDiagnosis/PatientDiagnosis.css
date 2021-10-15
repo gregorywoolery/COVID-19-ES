@@ -1,0 +1,54 @@
+.content-container{
+    margin: 0 0 3rem 10%;
+    /* padding: 0rem; */
+    border-radius: .3rem;
+    border: 1px solid var(--first-color);
+    width: 60%;
+}
+
+.content-container-header{
+    border-radius: .3rem .3 0 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--first-color);
+    color: #fff;
+}
+
+.content-container-content{
+    padding: 2rem;
+}
+
+.form-control{
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #171717;
+}
+
+.form-control:active{
+    border: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #61eb34;
+    transition: none;
+}
+
+.check-box-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.check-box-container .form-check{
+    width: 8rem;
+}
+
+.form-action-buttons{
+    display: flex;
+    justify-content: end;
+}
+
+.form-action-buttons button{
+    width: 10rem;
+}
+
