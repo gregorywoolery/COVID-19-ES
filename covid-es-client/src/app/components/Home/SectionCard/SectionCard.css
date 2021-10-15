@@ -1,0 +1,17 @@
+.section-card-title{
+    display: flex;
+    justify-content: end;
+}
+
+.section-card-title span{
+    font-size: 2rem;
+    color: var(--first-color);
+    z-index: 1;
+    font-weight: bold;
+}
+
+.section-cards > div:not(
+    .section-cards > div:last-child
+){
+    margin-bottom: 4rem;
+}

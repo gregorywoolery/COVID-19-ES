@@ -1,0 +1,34 @@
+.card{
+    height: 8rem;
+    width: 11rem;
+    border: none;
+}
+
+.card .card-header-img{
+    border-radius: 50%;
+    z-index: 1;
+    height: 2rem;
+}
+
+.card .card-img{
+    width: 4rem;
+    height: 4rem;
+}
+
+
+.card .card-body{
+    padding-top: 3rem;
+    font-size: 10px;
+    color: #fff;
+    background-color:var(--first-color);
+    border-radius: .4rem;
+    height: 8rem;
+}
+
+.card-body-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: bold;
+}

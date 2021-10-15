@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import axinstance from '../../../../services/AxiosService';
+import axinstance from '../../../../../services/AxiosService';
 import usePatientDiagnosis from './usePatientDiagnosis';
 import './PatientDiagnosis.css'
-import DialogModal from '../Form.components/Dialog.Modal.component';
+import DialogModal from '../../Form.components/Dialog.Modal.component';
 
 
 export default function PatientDiagnosis() {

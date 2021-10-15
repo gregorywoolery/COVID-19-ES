@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axinstance from '../../../../services/AxiosService'
+import axinstance from '../../../../../services/AxiosService'
 
 
 export default function Statistics() {

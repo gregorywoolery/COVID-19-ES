@@ -3,11 +3,11 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import './App.css';
 import Header from '../app/components/header/Header';
 import SideNav from '../app/components/sidenav/SideNav';
-import CovidVariant from './components/Home/CovidVariant/CovidVariant';
-import Dashboard from './components/Home/Dashboard/Dashboard'
-import Facts from './components/Home/Facts/Facts';
-import PatientDiagnosis from './components/Home/PatientDiagnosis/PatientDiagnosis';
-import Statistics from './components/Home/Statistics/Statistics';
+import CovidVariant from './components/Home/Pages/CovidVariant/CovidVariant';
+import Dashboard from './components/Home/Pages/Dashboard/Dashboard'
+import Facts from './components/Home/Pages/Facts/Facts';
+import PatientDiagnosis from './components/Home/Pages/PatientDiagnosis/PatientDiagnosis';
+import Statistics from './components/Home/Pages/Statistics/Statistics';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
