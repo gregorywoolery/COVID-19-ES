@@ -1,4 +1,0 @@
-from Routes.FactsRoute import FactsRoute
-from Routes.CovidVariantRoute import CovidVariantRoute
-from Routes.PatientDiagnosisRoute import PatientDiagnosisRoute
-from Routes.StatisticsRoute import StatisticsRoute
