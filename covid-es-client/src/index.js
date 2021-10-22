@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'react-slideshow-image/dist/styles.css'
 import App from './app/App';
 
 ReactDOM.render(

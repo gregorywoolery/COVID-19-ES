@@ -8,7 +8,7 @@ from itertools import islice
 from pyswip_mt import PrologMT
 from jinja2 import Template
 
-BASE_PROLOG_FILE = "patient_diagnosis.pl"
+BASE_PROLOG_FILE = "Prolog/patient_diagnosis.pl"
 STACK_LIMIT = 4000000000    # Limit to about 30 seconds runtime
 
 prolog = PrologMT()

@@ -1,0 +1,19 @@
+.slide-container {
+    width: 50rem;
+    height: 30rem;
+}
+
+
+.facts-title{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: var(--first-color);
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.facts-body{
+    border-bottom: 2px solid #2eff2e;
+}

@@ -22,3 +22,6 @@ alert_spike(Ans):-(Ans==y)->CovidNum is NewCovidNum+1,
 
 actions(Ans):-write('The short term actions are as follows: '),
     write('The long term actions are as follows:').
+
+
+% diagnose_patient() :- 
