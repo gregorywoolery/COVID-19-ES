@@ -19,6 +19,13 @@ severe_symptom("chest pain").
 
 
 covid_variant("Regular").
-covid_variant(covid_variant, "Delta").
-covid_variant(covid_variant, "Mu").
+covid_variant("Delta").
+covid_variant("Mu").
 
+covid_variant_symptoms(["difficulty breathing","muscle aches","congestion","cough","runny nose","headache","fever"],regular).
+covid_variant_symptoms(["chest pain","difficulty breathing","confusion","dizziness","sore_throat","congestion","cough","runny nose","headache","fever"],delta).
+covid_variant_symptoms(["blurred vision","diarrhea","loss of taste and smell","congestion","cough","runny nose","headache","fever"],mu).
+
+blood_presure_check_symptoms("blurred vision").
+blood_presure_check_symptoms("dizziness").
+blood_presure_check_symptoms("fainting").
