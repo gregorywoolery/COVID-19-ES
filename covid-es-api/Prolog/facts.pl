@@ -26,6 +26,15 @@ covid_variant_symptoms(["difficulty breathing","muscle aches","congestion","coug
 covid_variant_symptoms(["chest pain","difficulty breathing","confusion","dizziness","sore_throat","congestion","cough","runny nose","headache","fever"],delta).
 covid_variant_symptoms(["blurred vision","diarrhea","loss of taste and smell","congestion","cough","runny nose","headache","fever"],mu).
 
+% -->
+% covid_symptoms(["difficulty breathing","muscle aches","congestion","cough","runny nose","headache","fever"]).
+% covid_variant_symptoms(["chest pain","confusion","dizziness","sore_throat"], delta).
+% covid_variant_symptoms(["blurred vision","diarrhea","loss of taste and smell"], mu).
+
 blood_presure_check_symptoms("blurred vision").
 blood_presure_check_symptoms("dizziness").
 blood_presure_check_symptoms("fainting").
+
+covid_precautions("", regular).
+covid_precautions("", delta).
+covid_precautions("", mu).

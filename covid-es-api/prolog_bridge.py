@@ -14,22 +14,23 @@ STACK_LIMIT = 4000000000    # Limit to about 30 seconds runtime
 prolog = PrologMT()
 currently_consulted = ""
 
+"""
+    Function make decision on whether patient covid 19 state. 
+    Recieves patient data and returns diagnosis
+"""
+
 
 def diagnosePatient(patient):
     consult_covid_system()
-
-    prolog_query = f"celsius_to_Fahrenheit({patient})"
-    print(patient)
-    query_result = list(prolog.query(prolog_query, maxresult=1))
-
-    # Return result
-    return query_result
+    query = f"celsius_to_Fahrenheit(5, Result)"
+    diagnosis = list(prolog.query(query, maxresult=1))
+    return diagnosis
 
 
 def getStatistics():
     consult_covid_system()
 
-    prolog_query = f"celsius_to_Fahrenheit(1)"
+    prolog_query = f"celsius_to_Fahrenheit(1, Result)"
     query_result = list(prolog.query(prolog_query, maxresult=1))
 
     # Return result
@@ -38,8 +39,7 @@ def getStatistics():
 
 def consult_covid_system():
     """
-    Generate the right sized prolog file and add it as
-    consulted file to global prolog obj.
+    Consults prolog files and sets overall stack limit
     """
     # Enlarge stack
     next(prolog.query(f"set_prolog_flag(stack_limit, {STACK_LIMIT})."))
