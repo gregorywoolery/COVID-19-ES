@@ -1,13 +1,10 @@
 """
 Python function to bridge between the server and the Prolog logic.
 """
-from os import path
-from typing import List, Optional
-from itertools import islice
 
 from pyswip_mt import PrologMT
-from jinja2 import Template
-
+from smtp_mail import sendMail
+from fileoperations import writePatient
 BASE_PROLOG_FILE = "Prolog/patient_diagnosis.pl"
 STACK_LIMIT = 4000000000    # Limit to about 30 seconds runtime
 
@@ -22,8 +19,10 @@ currently_consulted = ""
 
 def diagnosePatient(patient):
     consult_covid_system()
-    query = f"celsius_to_Fahrenheit({patient['temp']}, Result)"
+    query = f"celsius_to_Fahrenheit({patient['Temperature']}, Result)"
     diagnosis = list(prolog.query(query, maxresult=1))
+    writePatient(patient)
+    # sendMail()
     return diagnosis
 
 
