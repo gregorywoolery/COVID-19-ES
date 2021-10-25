@@ -2,8 +2,9 @@ import React from 'react';
 import './FactsCard.css'
 import addButton from '../../../../../../assets/add.svg'
 
-export default function FactsCard({title, icon}) {
+export default function FactsCard({title, icon, setIsOpen}) {
   return (
+    <>
         <div className="facts-card">
             <div className="facts-card-container">
               <div className="facts-card-title">{title}</div>
@@ -12,8 +13,9 @@ export default function FactsCard({title, icon}) {
               </div>
             </div>
             <div className="button-actions">
-              <img className="button-add" src={addButton} alt="add" />
+              <img className="button-add" onClick={() => setIsOpen(true)} src={addButton} alt="add" />
             </div>
         </div>
-    )
+    </>
+  )
 }

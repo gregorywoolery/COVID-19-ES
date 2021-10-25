@@ -22,10 +22,6 @@ export default function SideNav() {
                             <img src={book} alt="" className="nav_icon"/>
                             <span className="nav_name">Add Facts</span>                             
                         </Link>
-                        <Link to='/Varitant/Mu' className="nav_link">
-                            <img src={coronavirus} alt="" className="nav_icon"/>
-                            <span className="nav_name">Variant</span> 
-                        </Link>
                         <Link to='/Patient-Diagnosis' className="nav_link">
                             <img src={patient} alt="" className="nav_icon"/>
                             <span className="nav_name">Diagnose Patient</span> 

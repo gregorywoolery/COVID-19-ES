@@ -17,6 +17,18 @@ def Statistics():
     return jsonify(stats)
 
 
+@app.route("/api/facts", methods=["POST"])
+def AddFacts():
+    data = request.get_json()
+    print(data)
+    return jsonify(data)
+
+
+@app.route("/api/facts/variants")
+def GetFacts():
+    return jsonify({'Variant': 'Mu'}, {'Variant': 'Delta'}, {'Variant': 'Regular'})
+
+
 """
 API function for diagnosis patient wit COVID-19 symptons.
 Call receives JSON with Patient Information and returns result.
@@ -26,7 +38,6 @@ Call receives JSON with Patient Information and returns result.
 @app.route("/api/patient-diagnosis", methods=["POST"])
 def PatientDiagnosis():
     data = request.get_json()
-    print(data)
     patientDiagnosis = diagnosePatient(data)
     return jsonify(patientDiagnosis)
 

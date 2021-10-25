@@ -10,7 +10,9 @@ This is to check if the reading shows that the blood pressure is high
 blood_presure_check(Systolic, Diastolic, Result):-
     Systolic =< 140,
     Diastolic =< 90 ->
-    Result is 0.
+    Result is 0. %Low blood pressure
+
+%Else result 1-> High blood pressure
 
 
 alert_spike(Ans):-(Ans==y)->CovidNum is NewCovidNum+1,

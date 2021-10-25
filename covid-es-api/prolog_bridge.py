@@ -22,7 +22,7 @@ currently_consulted = ""
 
 def diagnosePatient(patient):
     consult_covid_system()
-    query = f"celsius_to_Fahrenheit(5, Result)"
+    query = f"celsius_to_Fahrenheit({patient['temp']}, Result)"
     diagnosis = list(prolog.query(query, maxresult=1))
     return diagnosis
 

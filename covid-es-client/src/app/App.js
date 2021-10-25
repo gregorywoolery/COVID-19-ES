@@ -24,8 +24,6 @@ function App() {
             <Route exact path={"/Facts"} component={Facts}/>
             <Route exact path={"/Statistics"} component={Statistics}/>
             <Route exact path={"/Patient-Diagnosis"} component={PatientDiagnosis}/>
-            <Route exact path={"/Variant/Delta"} component={CovidVariant}/>
-            <Route exact path={"/Varitant/Mu"} component={CovidVariant}/>
           </Switch>
         </div>
       </div>
