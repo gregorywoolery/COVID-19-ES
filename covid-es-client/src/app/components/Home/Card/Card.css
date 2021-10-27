@@ -1,22 +1,22 @@
-.card{
+.card.profile-card{
     height: 8rem;
     width: 11rem;
     border: none;
 }
 
-.card .card-header-img{
+.card.profile-card .card-header-img{
     border-radius: 50%;
     z-index: 1;
     height: 2rem;
 }
 
-.card .card-img{
+.card.profile-card .card-img{
     width: 4rem;
     height: 4rem;
 }
 
 
-.card .card-body{
+.card.profile-card .card-body{
     padding-top: 3rem;
     font-size: 10px;
     color: #fff;
@@ -25,7 +25,7 @@
     height: 8rem;
 }
 
-.card-body-title{
+.card.profile-card .card-body-title{
     display: flex;
     justify-content: space-between;
     align-items: center;

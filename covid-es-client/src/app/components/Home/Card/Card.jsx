@@ -2,9 +2,9 @@ import React from 'react'
 import './Card.css'
 
 
-export default function Card({Name, Initials, Icon}) {
+export default function Card({Name, Initials, Icon, Bio}) {
     return (
-        <div className="card">
+        <div className="card profile-card">
             <div className="card-header-img">
                 <img className="card-img" src={Icon} alt="Card image cap" />
             </div>
@@ -14,7 +14,7 @@ export default function Card({Name, Initials, Icon}) {
                     <div className="card-body-title-logo">{Initials}</div>
                 </div>
                 <div className="card-body-content">
-                    UTech 4th Year
+                    {Bio}
                 </div>
             </div>
         </div>

@@ -9,6 +9,8 @@ import Facts from './components/Home/Pages/Facts/Facts';
 import PatientDiagnosis from './components/Home/Pages/PatientDiagnosis/PatientDiagnosis';
 import Statistics from './components/Home/Pages/Statistics/Statistics';
 import Modal from 'react-modal';
+import NotFound404 from './components/Home/Pages/NotFound404/NotFound404';
+import Patient from './components/Home/Pages/Patient/Patient';
 
 Modal.setAppElement('#root');
 
@@ -24,6 +26,8 @@ function App() {
             <Route exact path={"/Facts"} component={Facts}/>
             <Route exact path={"/Statistics"} component={Statistics}/>
             <Route exact path={"/Patient-Diagnosis"} component={PatientDiagnosis}/>
+            <Route exact path={"/Patient-Diagnosis/Patient/:patientid"} component={Patient}/>
+            <Route exact path={""} component={NotFound404}/>
           </Switch>
         </div>
       </div>

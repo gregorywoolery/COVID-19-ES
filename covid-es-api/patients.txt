@@ -1,0 +1,2 @@
+{'Firstname': 'Gregory', 'Lastname': 'Woolery', 'Age': 21, 'Exposed': 1, 'Temperature': 30, 'Symptoms': [{'Symptom': 'Dizziness'}, {'Symptom': 'Fever'}, {'Symptom': 'Extreme Tiredness'}], 'Systolic': '20', 'Diastolic': '100', 'id': 0}
+{'Firstname': 'Zidone', 'Lastname': 'Woolery', 'Age': 21, 'Exposed': 1, 'Temperature': 30, 'Symptoms': [{'Symptom': 'Dizziness'}, {'Symptom': 'Fever'}, {'Symptom': 'Extreme Tiredness'}], 'Systolic': '20', 'Diastolic': '100', 'id': 1}

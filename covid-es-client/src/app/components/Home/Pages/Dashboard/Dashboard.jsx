@@ -18,16 +18,19 @@ export default function Dashboard() {
                         Name={"Gregory Woolery"}
                         Icon={maledoctor}
                         Initials={"GW"}
+                        Bio="UTech Final Year"
                     />
                     <Card
                         Name={"Brianna Perkins"}
                         Icon={femaledoctor}
                         Initials={"BP"}
+                        Bio="UTech Final Year"
                     />
                     <Card
                         Name={"Matthew Ruddock"}
                         Icon={maledoctor}
                         Initials={"MR"}
+                        Bio="UTech Final Year"
                     />
                 </div>
                 <div className="dashboard-container-about">

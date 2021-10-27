@@ -14,6 +14,7 @@ blood_presure_check(Systolic, Diastolic, Result):-
 
 %Else result 1-> High blood pressure
 
+getVariants(Variant):-covid_variant(Variant).
 
 alert_spike(Ans):-(Ans==y)->CovidNum is NewCovidNum+1,
     actions(Ans);write('Okay').

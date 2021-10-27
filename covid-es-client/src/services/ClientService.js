@@ -42,3 +42,17 @@ export const GetVariants = async (setVariantList) =>{
 
     }
 }
+
+export const GetPatient = async (patientID, setPatient) => {
+    try {
+        const patient = await axinstance
+        .get(`/api/patient?patientid=${patientID}`)
+        .then(({data})=> {
+            return data;
+        });
+
+        setPatient(patient)
+    } catch (error) {
+        
+    }
+}

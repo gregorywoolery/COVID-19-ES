@@ -1,0 +1,88 @@
+.patient-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.patient-container-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.patient-container-header > div:first-child{
+    margin-bottom: 1rem;
+}
+
+
+.patient-container-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-results-container{
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.patient-precations-list li{
+    padding: .5rem 1rem;
+}
+.patient-precations-list > div{
+    padding: 1rem;
+}
+
+.patient-bio-container{
+    display: flex;
+}
+
+.patient-container-body .symptoms-list{
+    width: 22rem;
+    margin-right: 2rem;
+}
+
+.patient-container-body .symptoms-list li:first-child{
+    background-color: rgb(228, 79, 79);
+    padding: 1rem;
+}
+
+.list-group-item{
+    display: flex;
+}
+.list-title{
+    margin-left: .5rem;
+    width: 7rem;
+}
+
+.patient-card{
+    width: 25rem;
+    margin-top: 1rem;
+}
+
+.patient-result{
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+
+}
+
+.patient-result.negative{
+    background-color: rgb(63, 242, 114);
+}
+
+.patient-result.positive{
+    color: #fff;
+    background-color: rgb(242, 81, 63);
+}
+
+.patient-precation-symptom{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
