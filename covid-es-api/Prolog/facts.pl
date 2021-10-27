@@ -22,7 +22,7 @@ covid_variant("Regular").
 covid_variant("Delta").
 covid_variant("Mu").
 
-covid_symptoms(["difficulty breathing","muscle aches","congestion","cough","runny nose","headache","fever"]).
+covid_variant_symptoms(["difficulty breathing","muscle aches","congestion","cough","runny nose","headache","fever"], regular).
 covid_variant_symptoms(["chest pain","confusion","dizziness","sore_throat"], delta).
 covid_variant_symptoms(["blurred vision","diarrhea","loss of taste and smell"], mu).
 
