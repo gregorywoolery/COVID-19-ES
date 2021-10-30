@@ -43,7 +43,7 @@ export default function FactsDialogPopup({headerTitle, content, factType, setFor
                                 <Dropdown variantsList={variantsList} setVariant={setVariant} />
 
                                 <div className="input-group-append">
-                                    <label className="input-group-text" for="dropdown-list">Variant</label>
+                                    <label className="input-group-text" htmlFor="dropdown-list">Variant</label>
                                 </div>
                             </div>
                             <div className="mb-3">

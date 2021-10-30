@@ -15,10 +15,10 @@ export const GetPatientDiagnosis = async (patient) => {
 }
 
 
-export const AddFact = async (factType, factOperand, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
+export const AddFact = async (factType, factOperand, variant, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
     try {
         await axinstance
-        .post('/api/facts', {factType, factOperand})
+        .post(`/api/facts`, {"type": factType, "fact": factOperand, "variant": variant})
         .then(()  => {
             setConfirmLoading(false);
             setDialogSuccess(true);
@@ -31,13 +31,10 @@ export const AddFact = async (factType, factOperand, setConfirmLoading, setDialo
 
 export const GetVariants = async (setVariantList) =>{
     try {
-        const variantsResponse = await axinstance
+        await axinstance
         .get('/api/facts/variants')
-        .then(({data}) => {    
-            return data;
-        }) 
-
-        setVariantList(variantsResponse); 
+        .then(({data}) => setVariantList(data) ) 
+        
     } catch (error) {
 
     }

@@ -3,8 +3,10 @@ import * as clientService from '../../../../../../services/ClientService'
 
 const useCovidPrecautions= () => {    
     const [precaution, setPrecaution] = useState('');
-    const [variant, setVariant] = useState(1)
+    
+    const [variant, setVariant] = useState('')
     const [variantsList, setVariantList] = useState({})
+    
     const [dialogSuccess, setDialogSuccess] = useState(false);
     const [dialogFailed, setDialogFailed] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -18,8 +20,10 @@ const useCovidPrecautions= () => {
     }
 
     const AddNewPrecaution = () => {
+        setConfirmLoading(true)
+
         setTimeout(() => {
-            clientService.AddFact("precautions", precaution, setConfirmLoading, setDialogSuccess, setDialogFailed);            
+            clientService.AddFact("precautions", precaution, variant, setConfirmLoading, setDialogSuccess, setDialogFailed);            
         }, 2000);
     }
 

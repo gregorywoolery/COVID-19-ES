@@ -56,8 +56,8 @@ def GetStatistics():
 def GetVariants():
     consult_covid_system()
     query = "getVariants(Variant)"
-    query_result = simplejson.dumps(list(prolog.query(query)))
-    return simplejson.dumps(query_result)
+    query_result = list(prolog.query(query))
+    return query_result
 
 
 def AddNewFact(fact):

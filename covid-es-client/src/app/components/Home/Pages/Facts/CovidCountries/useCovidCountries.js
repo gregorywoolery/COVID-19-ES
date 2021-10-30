@@ -20,7 +20,7 @@ const useCovidCountries = () => {
         setConfirmLoading(true);
 
         setTimeout(() => {
-            clientService.AddFact("countries", country, setConfirmLoading, setDialogSuccess, setDialogFailed);
+            clientService.AddFact("countries", country, "all", setConfirmLoading, setDialogSuccess, setDialogFailed);
         }, 2000);
     }
 

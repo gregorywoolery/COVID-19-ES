@@ -12,7 +12,7 @@ export default function CovidSymptoms() {
         modalIsOpen,
         confirmLoading,
         setIsOpen,
-        AddNewPrecaution,
+        AddNewSymptom,
         setSymptom,
         setVariant,
         variantsList
@@ -33,7 +33,7 @@ export default function CovidSymptoms() {
                 setFormField={setSymptom}
                 modalIsOpen={modalIsOpen}
                 setClosed={SetDialogClosed}
-                actionOnSubmit={AddNewPrecaution} 
+                actionOnSubmit={AddNewSymptom} 
                 isLoading={confirmLoading}
                 isError={dialogFailed}
                 isSuccess={dialogSuccess}

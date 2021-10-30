@@ -1,9 +1,10 @@
 import React from 'react';
 import Modal from 'react-modal';
 import SuccessIcon from '../../../../../../../assets/success-accept.svg';
-import Loading from '../../../../Loading.component/Loading.component'
+
 import './FactsDialogPopup.css'
 import Dropdown from '../../../../Form.components/Dropdown.component/Dropdown.component'
+import Loading from '../../../../Loading.component/Loading.component';
 
 
 export default function FactsDialogPopup({headerTitle, content, modalIsOpen, setClosed, actionOnSubmit, isLoading, isError, isSuccess, variantsList, setVariant, factType, setFormField}) {
@@ -45,7 +46,7 @@ export default function FactsDialogPopup({headerTitle, content, modalIsOpen, set
                                 <Dropdown variantsList={variantsList} setVariant={setVariant} />
 
                                 <div className="input-group-append">
-                                    <label className="input-group-text" for="dropdown-list">Variant</label>
+                                    <label className="input-group-text" htmlFor="dropdown-list">Variant</label>
                                 </div>
                             </div>
                             <div className="mb-3">
