@@ -21,7 +21,7 @@ export default function Patient() {
     return (
         <div className="patient-container">
             {
-                !_.isEmpty(patient) ? (
+                _.isEmpty(patient) ? (
                     <div>
                         No Patient
                     </div>

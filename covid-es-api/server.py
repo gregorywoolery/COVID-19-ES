@@ -49,8 +49,9 @@ def GetFacts():
 @app.route("/api/patient-diagnosis", methods=["POST"])
 def PatientDiagnosis():
     data = request.get_json()
-    patientDiagnosis = DiagnosePatient(data)
-    return jsonify(patientDiagnosis)
+    print(data)
+    # patientDiagnosis = DiagnosePatient(data)
+    return jsonify(data)
 
 
 @app.route("/api/patient")

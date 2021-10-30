@@ -1,39 +1,48 @@
-import React, { useState } from 'react'
-import axinstance from '../../../../../services/AxiosService';
+import React, { useEffect, useState } from 'react'
 import usePatientDiagnosis from './usePatientDiagnosis';
 import './PatientDiagnosis.css'
 import DialogModal from '../../Form.components/Dialog.Modal.component';
 import _ from 'lodash'
-import DiagnosisResults from './DiagnosisResults/DiagnosisResults';
 
 export default function PatientDiagnosis() {
+    const [results, setResults] = useState();    
+
+
     const {
         SetDialogClosed,
         dialogSuccess,
         dialogFailed,
         modalIsOpen,
         confirmLoading,
-        setIsOpen
-    } = usePatientDiagnosis();
+        setIsOpen,
+        addCheckBoxEventListeners,
+        DiagnosePatient
+    } = usePatientDiagnosis(setResults);
 
-    const [results, setResults] = useState();    
 
-    const DiagnosePatient = () => {
-        
-    }
+    useEffect(() => {
+        addCheckBoxEventListeners();
+        return () => {}
+    }, [])
+
 
     return (
         <div className="content-container">
             {
-                _.isNil(results) ? (
+                _.isNil(results) && (
                     <>
                         <div className="content-container-header">Patient Diagnosis</div>
                             <div className="content-container-content">
                                 <form>
                                     <div className="mb-3">
-                                        <label htmlFor="InputName" className="form-label">Full Name</label>
-                                        <input type="text" className="form-control" id="InputName" aria-describedby="emailHelp"/>
-                                        <div id="emailHelp" className="form-text"></div>
+                                        <label htmlFor="InputName" className="form-label">First Name</label>
+                                        <input type="text" className="form-control" id="InputName"/>
+                                        <div id="" className="form-text"></div>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="InputName" className="form-label">Last Name</label>
+                                        <input type="text" className="form-control" id="InputName"/>
+                                        <div id="" className="form-text"></div>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Age</label>
@@ -56,32 +65,32 @@ export default function PatientDiagnosis() {
                                     <label htmlFor="Exposed" className="form-label">Are you experiencing any of these symptoms? Choose as many as you need</label>
                                     <div className="check-box-container">
                                         <div className="mb-3 form-check">
-                                            <input type="checkbox" className="form-check-input" id="dizziness"/>
+                                            <input type="checkbox" value="dizziness" className="form-check-input" id="dizziness"/>
                                             <label className="form-check-label" htmlFor="exampleCheck1">Dizziness</label>
                                         </div>
 
                                         <div className="mb-3 form-check">
-                                            <input type="checkbox" className="form-check-input" id="fever"/>
+                                            <input type="checkbox" value="fever" className="form-check-input" id="fever"/>
                                             <label className="form-check-label" htmlFor="exampleCheck1">Fever</label>
                                         </div>
 
                                         <div className="mb-3 form-check">
-                                            <input type="checkbox" className="form-check-input" id="extreme"/>
+                                            <input type="checkbox" value="extreme tiredness" className="form-check-input" id="extreme"/>
                                             <label className="form-check-label" htmlFor="exampleCheck1">Extreme Tiredness</label>
                                         </div>
 
                                         <div className="mb-3 form-check">
-                                            <input type="checkbox" className="form-check-input" id="sore"/>
+                                            <input type="checkbox" value="sore throat" className="form-check-input" id="sore"/>
                                             <label className="form-check-label" htmlFor="exampleCheck1">Sore throat</label>
                                         </div>
 
                                         <div className="mb-3 form-check">
-                                            <input type="checkbox" className="form-check-input" id="chest"/>
+                                            <input type="checkbox" value="chest pain" className="form-check-input" id="chest"/>
                                             <label className="form-check-label" htmlFor="exampleCheck1">Chest Pain</label>
                                         </div>
 
                                         <div className="mb-3 form-check">
-                                            <input type="checkbox" className="form-check-input" id="diarrhoea"/>
+                                            <input type="checkbox" value="diarrhoea" className="form-check-input" id="diarrhoea"/>
                                             <label className="form-check-label" htmlFor="exampleCheck1">Diarrhoea</label>
                                         </div>
                                     </div>
@@ -116,7 +125,7 @@ export default function PatientDiagnosis() {
                                 isSuccess={dialogSuccess}
                             />
                     </>
-                ) : (<DiagnosisResults/>)
+                )
             }
 
         </div>

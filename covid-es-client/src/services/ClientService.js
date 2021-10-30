@@ -1,16 +1,22 @@
 import axinstance from "./AxiosService"
 
 
-export const GetPatientDiagnosis = async (patient) => {
-    try{
-        const patientDiagnosis = await axinstance
-        .get('/PatientDiagnosis', {patient})
-        .then(({data}) => {
 
+
+export const DiagnosePatient = async (patient, setResults, setConfirmLoading, setDialogSuccess, setDialogFailed, GoToPatient) => {
+    try{
+        await axinstance
+        .post('/api/patient-diagnosis', {patient})
+        .then(({data}) => {
+            setConfirmLoading(false);
+            setDialogSuccess(true);
+            setResults(data);
+            GoToPatient(data);
         })
         
     }catch(err){
-
+        setConfirmLoading(false);
+        setDialogFailed(true);
     }
 }
 
