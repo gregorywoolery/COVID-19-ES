@@ -23,7 +23,7 @@ const useCovidPrecautions= () => {
         setConfirmLoading(true)
 
         setTimeout(() => {
-            clientService.AddFact("precautions", precaution, variant, setConfirmLoading, setDialogSuccess, setDialogFailed);            
+            clientService.AddFact("precautions", precaution, variant, null ,setConfirmLoading, setDialogSuccess, setDialogFailed);            
         }, 2000);
     }
 

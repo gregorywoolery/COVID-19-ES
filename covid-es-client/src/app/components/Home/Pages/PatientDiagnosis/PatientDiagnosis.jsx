@@ -7,12 +7,14 @@ import PatientFormInput from '../../Form.components/FormInput/PatientFormInput'
 
 export default function PatientDiagnosis() {
     const [knownSymptoms, setKnownSymptoms] = useState({});
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [age, setAge] = useState(1);
     const [temperature, setTemperature] = useState(1);
     const [systolic, setSystolic] = useState(1);
     const [diastolic, setDiastolic] = useState(1);
+    const [covidExposed, setCovidExposed] = useState(0);
 
 
     const {
@@ -24,9 +26,17 @@ export default function PatientDiagnosis() {
         setIsOpen,
         DiagnosePatient,
         showBloodPressureCheck,
-        GetSymptoms,
-        SubmitForm
-    } = usePatientDiagnosis(setKnownSymptoms);
+        GetSymptoms
+    } = usePatientDiagnosis(
+        setKnownSymptoms,
+        firstName,
+        lastName,
+        age,
+        temperature,
+        systolic,
+        diastolic,
+        covidExposed
+        );
 
 
     useEffect(() => {
@@ -43,7 +53,7 @@ export default function PatientDiagnosis() {
                     <>
                         <div className="content-container-header">Patient Diagnosis</div>
                         <div className="content-container-content">
-                            <form id="diagnose-patient-form" onSubmit={SubmitForm}>
+                            <form id="diagnose-patient-form">
                                 <PatientFormInput setFormField={setFirstName} fieldName="First Name" />
 
                                 <PatientFormInput setFormField={setLastName} fieldName="Last Name" />
@@ -52,14 +62,28 @@ export default function PatientDiagnosis() {
 
                                 <label htmlFor="Exposed" className="form-label">Have you been expoed to anyone with Covid</label>
                                 <div className="form-check">
-                                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
-                                    <label className="form-check-label" for="flexRadioDefault1">
+                                    <input 
+                                        className="form-check-input" 
+                                        type="radio" 
+                                        name="flexRadioDefault" 
+                                        value={1}
+                                        onChange={(e) => setCovidExposed(1)}
+                                        checked={covidExposed === 1}
+                                    />
+                                    <label className="form-check-label" htmlFor="flexRadioDefault1">
                                         Yes
                                     </label>
                                     </div>
                                     <div className="form-check">
-                                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                                    <label className="form-check-label" for="flexRadioDefault2">
+                                    <input 
+                                        className="form-check-input" 
+                                        type="radio" 
+                                        name="flexRadioDefault" 
+                                        value={0}
+                                        onChange={(e) => setCovidExposed(0)}
+                                        checked={covidExposed === 0}
+                                    />
+                                    <label className="form-check-label" htmlFor="flexRadioDefault2">
                                         No
                                     </label>
                                 </div>

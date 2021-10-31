@@ -31,10 +31,10 @@ export const DiagnosePatient = async (patient, setConfirmLoading, setDialogSucce
 }
 
 
-export const AddFact = async (factType, factOperand, variant, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
+export const AddFact = async (factType, factOperand, variant, symptomType, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
     try {
         await axinstance
-        .post(`/api/facts`, {"type": factType, "fact": factOperand, "variant": variant})
+        .post(`/api/facts`, {"type": factType, "fact": factOperand, "variant": variant, "symtomType": symptomType})
         .then(()  => {
             setConfirmLoading(false);
             setDialogSuccess(true);

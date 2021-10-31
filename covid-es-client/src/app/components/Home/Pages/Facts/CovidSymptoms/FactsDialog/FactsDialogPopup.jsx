@@ -48,14 +48,13 @@ export default function FactsDialogPopup({headerTitle, content, factType, setFor
                                 </div>
                             </div>
 
-                            <div class="input-group mb-3">
-                                <select defaultValue="mild" class="custom-select" id="inputGroupSelect02">
-                                    <option >Choose...</option>
+                            <div className="input-group mb-3">
+                                <select defaultValue="mild" className="custom-select" id="symptomType">
                                     <option value="mild">Mild</option>
                                     <option value="severe">Severe</option>
                                 </select>
-                                <div class="input-group-append">
-                                    <label class="input-group-text" for="inputGroupSelect02">Type</label>
+                                <div className="input-group-append">
+                                    <label className="input-group-text" htmlFor="inputGroupSelect02">Type</label>
                                 </div>
                             </div>
 

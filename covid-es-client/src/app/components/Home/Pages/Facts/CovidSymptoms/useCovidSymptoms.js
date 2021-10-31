@@ -3,8 +3,8 @@ import * as clientService from '../../../../../../services/ClientService'
 
 const useCovidSymptoms= () => {    
     const [symptom, setSymptom] = useState('');
-    
-    const [variant, setVariant] = useState('')
+
+    const [variant, setVariant] = useState('regular')
     const [variantsList, setVariantList] = useState({})
     const [dialogSuccess, setDialogSuccess] = useState(false);
     const [dialogFailed, setDialogFailed] = useState(false);
@@ -16,13 +16,21 @@ const useCovidSymptoms= () => {
         setDialogFailed(false);
         setDialogSuccess(false);
         setConfirmLoading(false);
+
+        setSymptom('');
+        setVariant('regular');
     }
 
     const AddNewSymptom = () => {
-        setConfirmLoading(true)
+        setConfirmLoading(true);
         
+        const symptomTypeInputs = document.getElementById("symptomType").options;        
+        var selectedIndex = symptomTypeInputs.selectedIndex;
+
+        const symptomTypeForm = symptomTypeInputs[selectedIndex].value;
+
         setTimeout(() => {
-            clientService.AddFact("symptoms", symptom, variant, setConfirmLoading, setDialogSuccess, setDialogFailed);            
+            clientService.AddFact("symptoms", symptom, variant, symptomTypeForm, setConfirmLoading, setDialogSuccess, setDialogFailed);            
         }, 2000);
     }
 

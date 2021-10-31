@@ -3,14 +3,21 @@ import * as clientService from '../../../../../services/ClientService'
 import { useHistory } from 'react-router-dom';
 import _ from 'lodash'
 
-const usePatientDiagnosis = (setKnownSymptoms) => {    
+const usePatientDiagnosis = (
+    setKnownSymptoms,
+    firstName,
+    lastName,
+    age,
+    temperature,
+    systolic,
+    diastolic,
+    covidExposed
+    ) => {    
     const [dialogSuccess, setDialogSuccess] = useState(false);
     const [dialogFailed, setDialogFailed] = useState(false);
     const [modalIsOpen, setIsOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [showBloodPressureCheck, setShowBloodPressureCheck] = useState(false)
-
-    const [symptoms, setSymptoms] = useState([]);
 
     const history = useHistory();
 
@@ -44,13 +51,6 @@ const usePatientDiagnosis = (setKnownSymptoms) => {
         var hasBloodPressureCheck = false;
 
         for (var checkBox of checkInputs) {
-            // if(checkBox.checked){
-            //     setSymptoms(symptoms => [...symptoms, this.value])
-            //     const newSymptoms = symptoms.filter((symptom) => symptom !== this.value);
-            //     setSymptoms(newSymptoms);
-            // }
-
-
             if( checkBox.value === "dizziness"  || 
                 checkBox.value === "fainting"   ||
                 checkBox.value === "blurred vision")   
@@ -63,33 +63,32 @@ const usePatientDiagnosis = (setKnownSymptoms) => {
         }
     }
 
-    const SubmitForm = (event) => {
-        alert('hello')
-        event.preventDefault();
-
-        setConfirmLoading(true);
-        
-        const data = new FormData(event.target);
-        var values = Object.fromEntries(data.entries());
-        
-        console.log(values);
-
-        // setTimeout(() => {
-        //     clientService.DiagnosePatient({"firstname": "GREGORY"}, setConfirmLoading, setDialogSuccess, setDialogFailed, GoToPatient);
-        // }, 2000);
-    }
-
     const DiagnosePatient = () => {
-        var patientForm = document.getElementById("diagnose-patient-form");
+        setConfirmLoading(true);
 
-        const form = new FormData(patientForm)
-        console.log(form.values())
+        const checkInputs = document.getElementsByClassName("form-check-input");
+        var symptoms = []
+        
+        for (var checkBox of checkInputs) {
+            if(checkBox.checked)
+            symptoms = [...symptoms, checkBox.value]                         
+        }
+        symptoms.shift();
 
-        // patientForm.submit((e) =>{
-        //     e.preventDefault();
+        const patient ={
+            firstName,
+            lastName,
+            age,
+            covidExposed,
+            temperature,
+            symptoms,
+            systolic,
+            diastolic
+        }
 
-        //     alert('hello')
-        // });
+        setTimeout(() => {
+            clientService.DiagnosePatient(patient, setConfirmLoading, setDialogSuccess, setDialogFailed, GoToPatient);
+        }, 2000);
     }
 
     const GetSymptoms = () => {
@@ -112,7 +111,6 @@ const usePatientDiagnosis = (setKnownSymptoms) => {
         DiagnosePatient,
         showBloodPressureCheck,
         GetSymptoms,
-        SubmitForm
     }
 }
 
