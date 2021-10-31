@@ -50,7 +50,7 @@ export default function FactsDialogPopup({headerTitle, content, modalIsOpen, set
                                 </div>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="exampleInputEmail1" className="form-label">Add Symptoms</label>
+                                <label htmlFor="exampleInputEmail1" className="form-label">Add Precaution</label>
                                 <input
                                     className="form-control" 
                                     type={ "text" }

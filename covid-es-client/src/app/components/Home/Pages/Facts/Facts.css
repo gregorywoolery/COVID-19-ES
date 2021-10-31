@@ -1,7 +1,15 @@
 .slide-container {
     width: 50rem;
-    height: 30rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
+
+
+.slide-container > div{
+    width: 40%;
+}
+
 
 
 .facts-title{

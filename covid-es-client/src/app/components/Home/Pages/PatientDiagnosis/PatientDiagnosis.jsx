@@ -3,9 +3,16 @@ import usePatientDiagnosis from './usePatientDiagnosis';
 import './PatientDiagnosis.css'
 import DialogModal from '../../Form.components/Dialog.Modal.component';
 import _ from 'lodash'
+import PatientFormInput from '../../Form.components/FormInput/PatientFormInput'
 
 export default function PatientDiagnosis() {
-    const [results, setResults] = useState();    
+    const [knownSymptoms, setKnownSymptoms] = useState({});
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [age, setAge] = useState(1);
+    const [temperature, setTemperature] = useState(1);
+    const [systolic, setSystolic] = useState(1);
+    const [diastolic, setDiastolic] = useState(1);
 
 
     const {
@@ -15,115 +22,97 @@ export default function PatientDiagnosis() {
         modalIsOpen,
         confirmLoading,
         setIsOpen,
-        addCheckBoxEventListeners,
-        DiagnosePatient
-    } = usePatientDiagnosis(setResults);
+        DiagnosePatient,
+        showBloodPressureCheck,
+        GetSymptoms,
+        SubmitForm
+    } = usePatientDiagnosis(setKnownSymptoms);
 
 
     useEffect(() => {
-        addCheckBoxEventListeners();
-        return () => {}
+        GetSymptoms();
+        return () => setKnownSymptoms({})
+        
     }, [])
 
 
     return (
         <div className="content-container">
             {
-                _.isNil(results) && (
+                !_.isEmpty(knownSymptoms) && (
                     <>
                         <div className="content-container-header">Patient Diagnosis</div>
-                            <div className="content-container-content">
-                                <form>
-                                    <div className="mb-3">
-                                        <label htmlFor="InputName" className="form-label">First Name</label>
-                                        <input type="text" className="form-control" id="InputName"/>
-                                        <div id="" className="form-text"></div>
+                        <div className="content-container-content">
+                            <form id="diagnose-patient-form" onSubmit={SubmitForm}>
+                                <PatientFormInput setFormField={setFirstName} fieldName="First Name" />
+
+                                <PatientFormInput setFormField={setLastName} fieldName="Last Name" />
+
+                                <PatientFormInput setFormField={setAge} fieldName="Age" fieldType="number" />
+
+                                <label htmlFor="Exposed" className="form-label">Have you been expoed to anyone with Covid</label>
+                                <div className="form-check">
+                                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
+                                    <label className="form-check-label" for="flexRadioDefault1">
+                                        Yes
+                                    </label>
                                     </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="InputName" className="form-label">Last Name</label>
-                                        <input type="text" className="form-control" id="InputName"/>
-                                        <div id="" className="form-text"></div>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className="form-label">Age</label>
-                                        <input type="number" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
-                                        <div id="emailHelp" className="form-text"></div>
-                                    </div>
-                                    <label htmlFor="Exposed" className="form-label">Have you been expoed to anyone with Covid</label>
-                                    <select defaultValue={0} className="form-select" aria-label="Default select example">
-                                        <option value="0" >Select</option>
-                                        <option value="1">Yes</option>
-                                        <option value="2">No</option>
-                                    </select>
+                                    <div className="form-check">
+                                    <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
+                                    <label className="form-check-label" for="flexRadioDefault2">
+                                        No
+                                    </label>
+                                </div>
 
-                                    <div className="mb-3">
-                                        <label htmlFor="InputName" className="form-label">Enter your temperature in degrees celcius</label>
-                                        <input type="text" className="form-control" id="InputName" aria-describedby="emailHelp"/>
-                                        <div id="emailHelp" className="form-text"></div>
-                                    </div>
+                                <PatientFormInput 
+                                    setFormField={setTemperature} 
+                                    fieldName="Enter your temperature in degrees celcius" 
+                                    fieldType="number" 
+                                />
 
-                                    <label htmlFor="Exposed" className="form-label">Are you experiencing any of these symptoms? Choose as many as you need</label>
-                                    <div className="check-box-container">
-                                        <div className="mb-3 form-check">
-                                            <input type="checkbox" value="dizziness" className="form-check-input" id="dizziness"/>
-                                            <label className="form-check-label" htmlFor="exampleCheck1">Dizziness</label>
-                                        </div>
+                                <label htmlFor="Exposed" className="form-label">Are you experiencing any of these symptoms? Choose as many as you need</label>
+                                <div className="check-box-container">
+                                    {
+                                        knownSymptoms && (
+                                            Array(knownSymptoms.length).fill(knownSymptoms).map((value, i) => (
+                                                <div className="mb-3 form-check" key={value[i].Symptom}>
+                                                    <input type="checkbox" value={value[i].Symptom} className="form-check-input"/>
+                                                    <label className="form-check-label" htmlFor="exampleCheck1">
+                                                        {
+                                                            value[i].Symptom
+                                                        }
+                                                    </label>
+                                                </div>
+                                            ))
+                                        )
+                                    }
+                                </div>
+                                {
+                                    showBloodPressureCheck && (
+                                        <>
+                                            <PatientFormInput setFormField={setSystolic} fieldName="Systolic Value" fieldType="number" />
+                                            <PatientFormInput setFormField={setDiastolic} fieldName="Diastolic Value" fieldType="number" />
+                                        </>
+                                    )
+                                }
 
-                                        <div className="mb-3 form-check">
-                                            <input type="checkbox" value="fever" className="form-check-input" id="fever"/>
-                                            <label className="form-check-label" htmlFor="exampleCheck1">Fever</label>
-                                        </div>
+                                <div className="form-action-buttons">
+                                    <button type="button" onClick={ () => setIsOpen(true)} className="btn btn-primary">Submit</button>                
+                                </div>
 
-                                        <div className="mb-3 form-check">
-                                            <input type="checkbox" value="extreme tiredness" className="form-check-input" id="extreme"/>
-                                            <label className="form-check-label" htmlFor="exampleCheck1">Extreme Tiredness</label>
-                                        </div>
-
-                                        <div className="mb-3 form-check">
-                                            <input type="checkbox" value="sore throat" className="form-check-input" id="sore"/>
-                                            <label className="form-check-label" htmlFor="exampleCheck1">Sore throat</label>
-                                        </div>
-
-                                        <div className="mb-3 form-check">
-                                            <input type="checkbox" value="chest pain" className="form-check-input" id="chest"/>
-                                            <label className="form-check-label" htmlFor="exampleCheck1">Chest Pain</label>
-                                        </div>
-
-                                        <div className="mb-3 form-check">
-                                            <input type="checkbox" value="diarrhoea" className="form-check-input" id="diarrhoea"/>
-                                            <label className="form-check-label" htmlFor="exampleCheck1">Diarrhoea</label>
-                                        </div>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="InputName" className="form-label">Systolic Value</label>
-                                        <input type="text" className="form-control" id="InputName" aria-describedby="emailHelp"/>
-                                        <div id="emailHelp" className="form-text"></div>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="InputName" className="form-label">Diastolic Value</label>
-                                        <input type="text" className="form-control" id="InputName" aria-describedby="emailHelp"/>
-                                        <div id="emailHelp" className="form-text"></div>
-                                    </div>
-
-                                    <div className="form-action-buttons">
-                                        <button type="button" onClick={ () => setIsOpen(true)} className="btn btn-primary">Submit</button>                
-                                    </div>
-                                </form>
-                            </div>
-
-                            <DialogModal 
-                                headerTitle={"Diagnosis"}
-                                content={"Are you sure the information you entered is correct ?"}
-                                successMessage={"View your results"}
-                                modalIsOpen={modalIsOpen}
-                                setClosed={SetDialogClosed}
-                                actionOnSubmit={DiagnosePatient} 
-                                isLoading={confirmLoading}
-                                isError={dialogFailed}
-                                isSuccess={dialogSuccess}
-                            />
+                                <DialogModal 
+                                    headerTitle={"Diagnosis"}
+                                    content={"Are you sure the information you entered is correct ?"}
+                                    successMessage={"View your results"}
+                                    modalIsOpen={modalIsOpen}
+                                    setClosed={SetDialogClosed}
+                                    actionOnSubmit={DiagnosePatient} 
+                                    isLoading={confirmLoading}
+                                    isError={dialogFailed}
+                                    isSuccess={dialogSuccess}
+                                />
+                            </form>
+                        </div>
                     </>
                 )
             }

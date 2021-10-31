@@ -64,3 +64,7 @@
     width: 10rem;
 }
 
+.form-check-label
+{
+    text-transform: capitalize;
+}

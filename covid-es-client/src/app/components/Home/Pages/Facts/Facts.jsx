@@ -1,20 +1,10 @@
 import React from 'react'
 import { Slide } from 'react-slideshow-image';
 import './Facts.css'
-import CovidCountries from './CovidCountries/CovidCountries';
 import CovidPrecautions from './CovidPrecautions/CovidPrecautions';
 import CovidSymptoms from './CovidSymptoms/CovidSymptoms';
 
 export default function Facts() {
-    const properties = {
-        duration: 0,
-        transitionDuration:'500',
-        slidesToShow: 2,
-        slidesToScroll: 2,
-        autoplay: false,
-        indicators: true,
-    };
-
     return (
         <div>
             <div className="facts-title">
@@ -25,11 +15,8 @@ export default function Facts() {
                 <p>What would you like to add information on?</p>
             </div>
             <div className="slide-container">
-                <Slide {...properties}>
-                    <CovidCountries/>
-                    <CovidSymptoms/>
-                    <CovidPrecautions/> 
-                </Slide>
+                <CovidSymptoms/>
+                <CovidPrecautions/> 
             </div>
         </div>
     )

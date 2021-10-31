@@ -1,37 +1,21 @@
-%Facts: Symptoms
-mild_symptom("dizziness").
-mild_symptom("blurred vision").
-mild_symptom("fever").
-mild_symptom("cough").
-mild_symptom("loss of smell and taste").
-mild_symptom("sore throat").
-mild_symptom("muscle aches").
-mild_symptom("tiredness").
-mild_symptom("headache").
-mild_symptom("diarrhoea").
-
-severe_symptom("fainting").
-severe_symptom("difficulty breathing").
-severe_symptom("confusion").
-severe_symptom("chest pain").
-
 %Facts: Covid Variants
 covid_variant(regular).
 covid_variant(delta).
 covid_variant(mu).
 
+%When patient has covid
 %Facts: Mild Symptom
 mild_symptom_fact("Typically last about 7-10 days").
 
 %List of covid variants and symptoms
-covid_variant_symptoms(["difficulty breathing","muscle
- aches","congestion","cough","runny nose","headache","fever"], regular).
+% covid_variant_symptoms(["difficulty breathing","muscle
+%  aches","congestion","cough","runny nose","headache","fever"], regular).
 
-covid_variant_symptoms(["chest pain","confusion","dizziness","sore
- throat"], delta).
+% covid_variant_symptoms(["chest pain","confusion","dizziness","sore
+%  throat"], delta).
 
-covid_variant_symptoms(["blurred vision","diarrhea","loss of taste and
- smell"], mu).
+% covid_variant_symptoms(["blurred vision","diarrhea","loss of taste and
+%  smell"], mu).
 
 %Facts: blood pressure check symptoms
 blood_pressure_check_symptoms("blurred vision").

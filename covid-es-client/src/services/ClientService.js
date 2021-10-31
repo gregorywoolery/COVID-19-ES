@@ -1,16 +1,26 @@
 import axinstance from "./AxiosService"
 
 
+export const GetSymptoms = async (setKnownSymptoms, addCheckBoxEventListeners) =>{
+    try {
+        await axinstance
+        .get('/api/facts/symptoms')
+        .then(({data}) => {
+            setKnownSymptoms(data);
+            addCheckBoxEventListeners();
+        })
+    } catch (error) {
+        
+    }
+}
 
-
-export const DiagnosePatient = async (patient, setResults, setConfirmLoading, setDialogSuccess, setDialogFailed, GoToPatient) => {
+export const DiagnosePatient = async (patient, setConfirmLoading, setDialogSuccess, setDialogFailed, GoToPatient) => {
     try{
         await axinstance
         .post('/api/patient-diagnosis', {patient})
         .then(({data}) => {
             setConfirmLoading(false);
             setDialogSuccess(true);
-            setResults(data);
             GoToPatient(data);
         })
         

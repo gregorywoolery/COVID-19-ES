@@ -14,7 +14,7 @@ export default function FactsDialogPopup({headerTitle, content, factType, setFor
                 content:{
                     display: 'flex',
                     flexDirection: 'column',
-                    height:'30rem',
+                    height:'34rem',
                     width:'22rem',
                     padding:'0rem',
                     border: 'none',
@@ -39,6 +39,7 @@ export default function FactsDialogPopup({headerTitle, content, factType, setFor
                         <div >
                             <div className="dialog-title">{content}</div>
                             <div>Choose variant</div>
+
                             <div className="input-group mb-3">
                                 <Dropdown variantsList={variantsList} setVariant={setVariant} />
 
@@ -46,6 +47,18 @@ export default function FactsDialogPopup({headerTitle, content, factType, setFor
                                     <label className="input-group-text" htmlFor="dropdown-list">Variant</label>
                                 </div>
                             </div>
+
+                            <div class="input-group mb-3">
+                                <select defaultValue="mild" class="custom-select" id="inputGroupSelect02">
+                                    <option >Choose...</option>
+                                    <option value="mild">Mild</option>
+                                    <option value="severe">Severe</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <label class="input-group-text" for="inputGroupSelect02">Type</label>
+                                </div>
+                            </div>
+
                             <div className="mb-3">
                                 <label htmlFor="exampleInputEmail1" className="form-label">Add Symptoms</label>
                                 <input
