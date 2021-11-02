@@ -1,7 +1,7 @@
 from os import error
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from prolog_bridge import DiagnosePatient, GetStatistics, GetVariants, AddNewFact, GetCovidCountries, GetPatientObj, GetSymptoms
+from prolog_bridge import DiagnosePatient, GetStatistics, GetVariants, AddNewFact, GetPatientObj, GetSymptoms
 
 app = Flask(__name__)
 CORS(app)
@@ -21,16 +21,6 @@ def AddFacts():
     print(data)
     # AddNewFact(data)
     return jsonify(data)
-
-
-@app.route("/api/countries")
-def GetCountries():
-    try:
-        countries = GetCovidCountries()
-        return jsonify(countries)
-    except error:
-        return {}
-        pass
 
 
 # API function for getting all covid variants
@@ -57,10 +47,9 @@ def GetSymptomsRoute():
 # Call receives JSON with Patient Information and returns result.
 @app.route("/api/patient-diagnosis", methods=["POST"])
 def PatientDiagnosis():
-    data = request.get_json()
-    print(data)
-    # patientDiagnosis = DiagnosePatient(data)
-    return jsonify(data)
+    data = request.get_json()['patient']
+    patientDiagnosis = DiagnosePatient(data)
+    return jsonify(patientDiagnosis)
 
 
 @app.route("/api/patient")

@@ -10,12 +10,15 @@ has_covid(Symptom):-
 identify_covid_type(Symptom,Type):-
     symptoms_type_variant(Type,_,Symptom).
 
+identify_covid_type_variant(Type, Variant, Symptom):-
+    symptoms_type_variant(Type, Variant, Symptom).
+
 %Rule: Convert a Celsius reading to Fahrenheit
 cal_celsius_to_fahrenheit(C_Temp,TempReading):-
     TempReading is(C_Temp * 9/5) + 32.
 
 %Rule: Checks the blood pressure, if result is high(0), low(1)
-cal_low_blood_pressure_check(Systolic, Diastolic,Reading):-
+cal_low_blood_pressure_check(Systolic, Diastolic, Reading):-
     Systolic < 90, Diastolic < 60 -> Reading is 1;
     Reading is 0.
 

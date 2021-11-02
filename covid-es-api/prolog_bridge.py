@@ -7,8 +7,7 @@ from flask.json import jsonify
 from pyswip.easy import Query
 from pyswip_mt import PrologMT
 from smtp_mail import sendMail
-from fileoperations import writePatient, getPatientFromFile
-import simplejson
+from fileoperations import writePatient, getPatientFromFile, getAllPatientsFromFile
 
 
 FACTS_PROLOG_FILE = "Prolog/facts.pl"
@@ -33,26 +32,151 @@ def GetPatientObj(patientid):
 def DiagnosePatient(patient):
     consult_covid_system()
 
-    patientSymptoms = patient['Symptoms']
-    symptoms = []
-    for symp in patientSymptoms:
-        symptoms.append(symp['Symptom'])
+    bloodPressureCheck = 0
+    if('dizziness' in patient['symptoms'] or
+        'fainting' in patient['symptoms'] or
+       'blurred vision' in patient['symptoms']):
+        systolicValue = patient['systolic']
+        diastolicValue = patient['diastolic']
 
-    query = f"cal_celsius_to_fahrenheit({patient['Temperature']}, Result)"
-    diagnosis = list(prolog.query(query, maxresult=1))
+        bloodPressureQuery = f"cal_low_blood_pressure_check({systolicValue}, {diastolicValue}, Result)"
+        bloodPressureResponse = list(
+            prolog.query(bloodPressureQuery, maxresult=1))
+        bloodPressureCheck = bloodPressureResponse[0]['Result']
 
-    # hasCovid
+    patientTemperature = patient['temperature']
+    temperatureQuery = f"cal_celsius_to_fahrenheit({patientTemperature}, Result)"
+    temperatureResponse = list(prolog.query(temperatureQuery, maxresult=1))
+    temperature = temperatureResponse[0]['Result']
+
+    covidRisk = 0
+    mildSymptoms = 0
+    severeSymptoms = 0
+    variant = 'none'
+    regularCovidCount = 0
+    deltaCovidCount = 0
+    muCovidCount = 0
+    riskAnalysis = 0
+
+    muMildCount = 0
+    muSevereCount = 0
+    deltaMildCount = 0
+    deltaSereveCount = 0
+    regularMildCount = 0
+    regularSevereCount = 0
+
+    patientSymptoms = patient['symptoms']
+
+    for symptom in patientSymptoms:
+        variantTypeQuery = f'symptoms_type_variant(Type, Variant, "{symptom}")'
+        variantTypeResponse = list(prolog.query(
+            variantTypeQuery, maxresult=1))[0]
+
+        if (len(variantTypeResponse) != 0):
+            if(variantTypeResponse['Type'] == 'severe'):
+                severeSymptoms += 1
+                covidRisk += 5
+            if(variantTypeResponse['Type'] == 'mild'):
+                mildSymptoms += 1
+                covidRisk += 1
+
+            if(variantTypeResponse['Variant'] == 'regular'):
+                regularCovidCount += 1
+                covidRisk += 3
+
+            if(variantTypeResponse['Variant'] == 'delta'):
+                deltaCovidCount += 1
+                covidRisk += 5
+            if(variantTypeResponse['Variant'] == 'mu'):
+                muCovidCount += 1
+                covidRisk += 5
+
+            # Place in function
+            if(variantTypeResponse['Variant'] == 'mu' and variantTypeResponse['Type'] == 'mild'):
+                muMildCount += 1
+            if(variantTypeResponse['Variant'] == 'mu' and variantTypeResponse['Type'] == 'severe'):
+                muSevereCount += 1
+            if(variantTypeResponse['Variant'] == 'delta' and variantTypeResponse['Type'] == 'mild'):
+                deltaMildCount += 1
+            if(variantTypeResponse['Variant'] == 'delta' and variantTypeResponse['Type'] == 'severe'):
+                deltaSereveCount += 1
+            if(variantTypeResponse['Variant'] == 'regular' and variantTypeResponse['Type'] == 'mild'):
+                regularMildCount += 1
+            if(variantTypeResponse['Variant'] == 'regular' and variantTypeResponse['Type'] == 'severe'):
+                regularSevereCount += 1
+
+    # Matrix counting system to determine if patient at risk of Covid
+    if(mildSymptoms > 4):
+        covidRisk += 4
+
+    if(regularCovidCount >= 3):
+        covidRisk += 4
+
+    if(deltaCovidCount > 2):
+        covidRisk += 10
+
+    if(muCovidCount > 2):
+        covidRisk += 10
+
+    if(patient['covidExposed'] == 1):
+        covidRisk += 3
+
+    # Analyze risk based of how much of a risk
+    if(covidRisk > 6):
+        riskAnalysis = 1
+
+    if(covidRisk > 14):
+        riskAnalysis = 2
+
+    print(riskAnalysis)
+    print(covidRisk)
+
     # identify_covid_variant
-    # cal_low_blood_pressure_check
+    if(riskAnalysis >= 1):
+        if(muCovidCount >= deltaCovidCount):
+            variant = 'mu'
+        elif(deltaCovidCount < muCovidCount):
+            variant = 'delta'
+        elif(muSevereCount > deltaSereveCount or muMildCount > deltaMildCount):
+            variant = 'mu'
+        elif(deltaSereveCount > muSevereCount or deltaMildCount > muMildCount):
+            variant = 'delta'
+        elif(regularCovidCount >= 3):
+            variant = 'regular'
 
     # Write patient to file
-    # writePatient(patient)
+    patientDiagnosis = {
+        "firstName": patient['firstName'],
+        "lastName": patient['lastName'],
+        "age":  patient['age'],
+        "covid_exposed": patient['covidExposed'],
+        "temperature": temperature,
+        "blood_presure": bloodPressureCheck,
+        "risk_analysis": riskAnalysis,
+        "variant": variant,
+        "symptoms": patientSymptoms,
+        "systolic": patient['systolic'],
+        "diastolic": patient['diastolic']
+    }
+
+    # writePatient(patientDiagnosis)
 
     # When finished -> Check if spike
-    # alert_spike(Amt_Cases):
-    # sendMail()
+    CheckIfSpike()
 
-    return diagnosis
+    return patientDiagnosis
+
+
+def CheckIfSpike():
+    patients = getAllPatientsFromFile()
+    riskOfCovid = 0
+
+    for patient in patients:
+        if(patient['risk_analysis'] > 0):
+            riskOfCovid += 1
+
+    if(riskOfCovid >= 2):
+        sendMail()
 
 
 def GetSymptoms():
@@ -88,14 +212,6 @@ def AddNewFact(fact):
 
     # print(assertion)
     # query = prolog.asserta(assertion)
-
-
-def GetCovidCountries():
-    consult_covid_system()
-    query = "covidCountries(Countries)"
-    query_result = list(prolog.query(query))
-    print(query_result)
-    return simplejson.dumps(query_result)
 
 
 def consult_covid_system():

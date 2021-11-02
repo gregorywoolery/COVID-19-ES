@@ -90,7 +90,7 @@ export default function PatientDiagnosis() {
 
                                 <PatientFormInput 
                                     setFormField={setTemperature} 
-                                    fieldName="Enter your temperature in degrees celcius" 
+                                    fieldName="Enter your temperature in Celsius (C&#176;)" 
                                     fieldType="number" 
                                 />
 

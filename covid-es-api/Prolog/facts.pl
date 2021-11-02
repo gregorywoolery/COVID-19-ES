@@ -41,18 +41,18 @@ long_term_actions("Keep track of your symptoms and inform a medical proffesional
 
 
 %Relationship: Covid symptoms to their type and variant
-symptoms_type_variant(severe,regular,"difficulty breathing").
-symptoms_type_variant(mild,regular,"muscle aches").
-symptoms_type_variant(mild,regular,"congestion").
-symptoms_type_variant(mild,regular,"cough").
-symptoms_type_variant(mild,regular,"runny nose").
-symptoms_type_variant(mild,regular,"headache").
-symptoms_type_variant(mild,regular,"fever").
-symptoms_type_variant(severe,regular,"fainting").
-symptoms_type_variant(severe,delta,"chest pain").
-symptoms_type_variant(severe,delta,"confusion").
-symptoms_type_variant(mild,delta,"dizziness").
-symptoms_type_variant(mild,delta,"sore throat").
-symptoms_type_variant(mild,mu,"blurred vision").
-symptoms_type_variant(mild,mu,"diarrhea").
-symptoms_type_variant(mild,mu,"loss of taste and smell").
+symptoms_type_variant(severe, regular, "difficulty breathing").
+symptoms_type_variant(mild, regular, "muscle aches").
+symptoms_type_variant(mild, regular, "congestion").
+symptoms_type_variant(mild, regular, "cough").
+symptoms_type_variant(mild, regular, "runny nose").
+symptoms_type_variant(mild, regular, "headache").
+symptoms_type_variant(mild, regular, "fever").
+symptoms_type_variant(severe, regular, "fainting").
+symptoms_type_variant(severe, delta, "chest pain").
+symptoms_type_variant(severe, delta, "confusion").
+symptoms_type_variant(mild, delta, "dizziness").
+symptoms_type_variant(mild, delta, "sore throat").
+symptoms_type_variant(severe, mu, "blurred vision").
+symptoms_type_variant(mild, mu, "diarrhea").
+symptoms_type_variant(severe, mu, "loss of taste and smell").
