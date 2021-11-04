@@ -96,8 +96,7 @@ const usePatientDiagnosis = (
     }
 
     const GoToPatient = (patient) => {
-        // setSymptoms({})
-        history.push(`/Patient-Diagnosis/Patient/${'1'}`);
+        history.push(`/Patient-Diagnosis/Patient/${patient}`);
     }
 
     return {

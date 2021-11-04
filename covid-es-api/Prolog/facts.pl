@@ -23,7 +23,7 @@ blood_pressure_check_symptoms("dizziness").
 blood_pressure_check_symptoms("fainting").
 
 %Facts: Covid precautions
-covid_precautions("Maintain a safe distance from others (at least 1 metre), even if they don’t appear to be sick.").
+covid_precautions("Maintain a safe distance from others (at least 1 metre), even if they do not appear to be sick.").
 covid_precautions("Wear a mask in public, especially indoors or when physical distancing is not possible.").
 covid_precautions("Choose open, well-ventilated spaces over closed ones. Open a window if indoors.").
 covid_precautions("Clean your hands often. Use soap and water, or an alcohol-based hand rub.").

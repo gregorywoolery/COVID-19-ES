@@ -23,24 +23,22 @@ cal_low_blood_pressure_check(Systolic, Diastolic, Reading):-
     Reading is 0.
 
 %Rule: Displays short term actions.
-all_short_term_actions:-
-    short_term_actions(X), nl, write(X).
+all_short_term_actions(Actions):-
+    short_term_actions(Actions).
 
 %Rule: Displays long term actions.
-all_long_term_actions:-
-    long_term_actions(X), nl, write(X).
+all_long_term_actions(Actions):-
+    long_term_actions(Actions).
 
 %Rule: Alert system if there is a spike in cases, above 120 cases
 alert_spike(Amt_Cases):-
-    Amt_Cases >= 120,actions;
+    Amt_Cases >= 120,actions(ShortTermActions, LongTermActions);
     nl,write('No Alert').
 
 %Rule: Displays both short and long term actions
-actions:-
-    write('The short term actions are as follows:'),
-    nl,all_short_term_actions;
-    nl,write('The long term actions are as follows:'),
-    nl,all_long_term_actions.
+actions(ShortTermActions, LongTermActions):-
+    all_short_term_actions(ShortTermActions),
+    all_long_term_actions(LongTermActions).
 
 %Rule: Searches through a list and returns element if found.
 member(X,[X|_]).

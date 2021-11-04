@@ -78,8 +78,12 @@
 
 .patient-result.positive{
     color: #fff;
+    background-color: rgb(242, 155, 63);
+}
+.patient-result.positive-alert{
     background-color: rgb(242, 81, 63);
 }
+
 
 .patient-precation-symptom{
     display: flex;

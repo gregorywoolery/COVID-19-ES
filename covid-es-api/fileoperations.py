@@ -13,6 +13,8 @@ def writePatient(patient):
     with open(r"patients.txt", 'a') as patientFile:
         patientFile.write(f'{str(patient)}\n')
 
+    return patient['id']
+
 
 def getTotalPatients():
     patientCount = 0

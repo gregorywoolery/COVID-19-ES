@@ -21,7 +21,8 @@ export const DiagnosePatient = async (patient, setConfirmLoading, setDialogSucce
         .then(({data}) => {
             setConfirmLoading(false);
             setDialogSuccess(true);
-            GoToPatient(data);
+            
+            GoToPatient(data.patientID);
         })
         
     }catch(err){
@@ -61,6 +62,7 @@ export const GetPatient = async (patientID, setPatient) => {
         const patient = await axinstance
         .get(`/api/patient?patientid=${patientID}`)
         .then(({data})=> {
+            console.log(data)
             return data;
         });
 

@@ -20,11 +20,43 @@ prolog = PrologMT()
 
 def GetPatientObj(patientid):
     consult_covid_system()
-    patient = getPatientFromFile(int(patientid))
-    if patient == '':
+
+    patientResponse = getPatientFromFile(int(patientid))
+    if patientResponse == '':
         return {"success": "false"}
 
-    return patient
+    shortTermActionsQuery = f"covid_precautions(Actions)"
+    if(patientResponse['risk_analysis'] > 0):
+        shortTermActionsQuery = f"all_short_term_actions(Actions)"
+
+    shortTermActionsResponse = list(
+        prolog.query(shortTermActionsQuery))
+    shortTermActions = []
+    for action in shortTermActionsResponse:
+        shortTermActions.append(
+            action['Actions']
+        )
+
+    longTermActionsQuery = f"all_long_term_actions(Actions)"
+    longTermActionsResponse = list(
+        prolog.query(longTermActionsQuery))
+    longTermActions = []
+    for action in longTermActionsResponse:
+        longTermActions.append(
+            action['Actions']
+        )
+
+    patientResponse['short_term_actions'] = shortTermActions
+    patientResponse['long_term_actions'] = longTermActions
+
+    patientResponse['risk_note'] = f"{patientResponse['firstName']} is not at risk"
+
+    if(patientResponse['risk_analysis'] == 1):
+        patientResponse['risk_note'] = f"{patientResponse['firstName']} is at risk"
+    if(patientResponse['risk_analysis'] == 2):
+        patientResponse['risk_note'] = f"{patientResponse['firstName']} is at serious risk"
+
+    return patientResponse
 
 
 # Function make decision on whether patient covid 19 state.
@@ -76,6 +108,7 @@ def DiagnosePatient(patient):
             if(variantTypeResponse['Type'] == 'severe'):
                 severeSymptoms += 1
                 covidRisk += 5
+
             if(variantTypeResponse['Type'] == 'mild'):
                 mildSymptoms += 1
                 covidRisk += 1
@@ -159,12 +192,14 @@ def DiagnosePatient(patient):
         "diastolic": patient['diastolic']
     }
 
-    # writePatient(patientDiagnosis)
+    patientID = writePatient(patientDiagnosis)
 
     # When finished -> Check if spike
-    CheckIfSpike()
+    # CheckIfSpike()
 
-    return patientDiagnosis
+    return {
+        "patientID": patientID
+    }
 
 
 def CheckIfSpike():
