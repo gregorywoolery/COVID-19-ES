@@ -224,12 +224,106 @@ def GetSymptoms():
 
 def GetStatistics():
     consult_covid_system()
+    patients = getAllPatientsFromFile()
+    totalPatients = len(patients)
 
-    query = f"celsius_to_Fahrenheit(1, Result)"
-    query_result = list(prolog.query(query, maxresult=1))
+    patientAtRisk = 0
+    patientNoneRisk = 0
 
-    # Return result
-    return query_result
+    deltaVariantCount = 0
+    muVariantCount = 0
+    regularCount = 0
+
+    mildCount = 0
+    severeCount = 0
+    # Patients At Risk vs Not At Risk
+    for patient in patients:
+        if(patient['variant'] == "mu"):
+            muVariantCount += 1
+        elif(patient['variant'] == "delta"):
+            deltaVariantCount += 1
+        else:
+            regularCount += 1
+
+        if(patient['risk_analysis'] > 0):
+            patientAtRisk += 1
+        else:
+            patientNoneRisk += 1
+
+        mildType = False
+        severeType = True
+        for symptom in patient['symptoms']:
+            symptomTypeQuery = f'symptoms_type_variant(Type,_,"{symptom}")'
+            symptomTypeResponse = list(
+                prolog.query(symptomTypeQuery, maxresult=1))
+            symptomType = symptomTypeResponse[0]['Type']
+            if(symptomType == "mild"):
+                mildType = True
+            if(symptomType == "severe"):
+                severeType = True
+
+        if(mildType == True):
+            mildCount += 1
+        if(severeType == True):
+            severeCount += 1
+
+    print(mildCount)
+
+    RiskCalulationQuery = f'pos_neg_calculation({totalPatients},{patientAtRisk},{patientNoneRisk},RiskPercentaage, NoneRiskPercentage)'
+    RiskCalulationResponse = list(
+        prolog.query(RiskCalulationQuery, maxresult=1))
+    RiskPercentage = RiskCalulationResponse[0]['RiskPercentaage']
+    NoneRiskPercentage = RiskCalulationResponse[0]['NoneRiskPercentage']
+
+    SymptomsTypeCalculationQuery = f"symptoms_type_calculations({totalPatients}, {mildCount}, {severeCount}, MildPercentage, ServerePercentage)"
+    SymptomsTypeCalculationResponse = list(
+        prolog.query(SymptomsTypeCalculationQuery, maxresult=1))
+    MildPercentage = SymptomsTypeCalculationResponse[0]['MildPercentage']
+    ServerePercentage = SymptomsTypeCalculationResponse[0]['ServerePercentage']
+
+    VariantCalculationQuery = f"variant_calculations({totalPatients}, {muVariantCount}, {deltaVariantCount}, {regularCount}, MuPercentage, DeltaPercentage, RegularPercentage)"
+    VariantCalculationResponse = list(
+        prolog.query(VariantCalculationQuery, maxresult=1))
+    MuPercentage = VariantCalculationResponse[0]['MuPercentage']
+    DeltaPercentage = VariantCalculationResponse[0]['DeltaPercentage']
+    RegularPercentage = VariantCalculationResponse[0]['RegularPercentage']
+
+    return {
+        "Risk": {
+            "NoneRisk": {
+                "amount": patientNoneRisk,
+                "percentage": "{:.2f}".format(NoneRiskPercentage),
+            },
+            "AtRisk": {
+                "amount": patientAtRisk,
+                "percentage": "{:.2f}".format(RiskPercentage),
+            }
+        },
+        "CovidVariant": {
+            "Delta": {
+                "amount": deltaVariantCount,
+                "percentage": "{:.2f}".format(DeltaPercentage)
+            },
+            "Mu": {
+                "amount": muVariantCount,
+                "percentage": "{:.2f}".format(MuPercentage)
+            },
+            "Regular": {
+                "amount": regularCount,
+                "percentage": "{:.2f}".format(RegularPercentage)
+            }
+        },
+        "Symptom": {
+            "Mild": {
+                "amount": mildCount,
+                "percentage": "{:.2f}".format(MildPercentage)
+            },
+            "Severe": {
+                "amount": severeCount,
+                "percentage": "{:.2f}".format(ServerePercentage)
+            },
+        }
+    }
 
 
 def GetVariants():
@@ -239,9 +333,23 @@ def GetVariants():
     return query_result
 
 
-def AddNewFact(fact):
+def AddNewFact(factParam):
     consult_covid_system()
-    print(fact)
+
+    # query = ''
+    # factType = factParam['type']
+    # fact = factParam['fact']
+    # variant = factParam['variant']
+    # symptomType = factParam['symtomType']
+
+    # if(factType == "symptoms"):
+    #     query = f"symptoms_type_variant(_, _, {fact})"
+    # elif(factType == "precautions"):
+    #     query = f"covid_precautions({})"
+
+    # query_result = list(prolog.query(query, maxresult=1))
+
+    print(factParam)
     # if fact['factType'] == "countries":
     #     assertion = f"covidCountries({fact['factOperand']})"
 

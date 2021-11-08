@@ -1,0 +1,11 @@
+.chart-container-single{
+    width: 25rem;
+    margin-right: 3rem;
+}
+
+
+.chart-container-single div:last-child{
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}

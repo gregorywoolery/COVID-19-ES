@@ -44,3 +44,34 @@ actions(ShortTermActions, LongTermActions):-
 member(X,[X|_]).
 member(X,[_|T]):-
     member(X,T).
+
+
+
+%Statistics section
+%The percentage of persons with mild symptoms, the percentage of persons with severe symptoms, the
+% percentage of persons with the Delta variant and the percentage of
+% persons with the Mu variant.
+
+
+%the percentage of perosns with and without covid
+pos_neg_calculation(Total,Covidpositive,Covidnegative, RiskPercentaage, NoneRiskPercentage):-
+    Perpos is Covidpositive/Total, RiskPercentaage is Perpos * 100,
+    Perneg is Covidnegative/Total, NoneRiskPercentage is Perneg * 100.
+
+%percentage of persons with mild and severe symptoms
+symptoms_type_calculations(Postotal, Mild, Severe, MildPercentage, ServerePercentage):-
+    Persevere is Severe/Postotal, ServerePercentage is Persevere * 100,
+    Permild is Mild/Postotal, MildPercentage is Permild * 100.
+
+
+%percentage of persons with the Delta variant and the Mu variant
+variant_calculations(Postotal,Mu,Delta, Regular, MuPercentage, DeltaPercentage, RegularPercentage):-
+    PerMu is Mu/Postotal, MuPercentage is PerMu*100,
+    PerDelta is Delta/Postotal, DeltaPercentage is PerDelta*100,
+    PerRegular is Regular/Postotal, RegularPercentage is PerRegular*100.
+
+
+%Percentage of persons with low blood pressure
+lowblood_calculations(Bp,Total):-
+    Bp is Bp/Total,Bpanswer is Bp*100,
+    write('The percentage of patients with low blood pressure: '),write(Bpanswer),write('%').

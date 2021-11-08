@@ -18,8 +18,7 @@ def Statistics():
 @app.route("/api/facts", methods=["POST"])
 def AddFacts():
     data = request.get_json()
-    print(data)
-    # AddNewFact(data)
+    AddNewFact(data)
     return jsonify(data)
 
 
