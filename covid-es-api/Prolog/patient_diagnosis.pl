@@ -22,6 +22,12 @@ cal_low_blood_pressure_check(Systolic, Diastolic, Reading):-
     Systolic < 90, Diastolic < 60 -> Reading is 1;
     Reading is 0.
 
+precaution_exist(ShortTerm, LongTerm, Precaution):-
+    short_term_actions(ShortTerm),
+    long_term_actions(LongTerm),
+    covid_precautions(Precaution).
+
+
 %Rule: Displays short term actions.
 all_short_term_actions(Actions):-
     short_term_actions(Actions).

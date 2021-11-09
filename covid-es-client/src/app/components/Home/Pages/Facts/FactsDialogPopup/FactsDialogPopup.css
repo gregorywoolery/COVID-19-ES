@@ -1,4 +1,8 @@
 /* DIALOG BOX IN PROFILE */
+.dialog-confirm-button{
+    background-color: var(--first-color) !important;
+}
+
 .dialog-modal-header *{
     background-color: var(--first-color) !important;
 }
@@ -34,7 +38,7 @@
 
 .dialog-title{
     font-weight: bold;
-    margin: 2rem 0rem 3rem !important;
+    margin: 2rem 0rem 2rem !important;
     display: flex;
     justify-content: center;
     color: #58595A;
@@ -67,7 +71,7 @@
     border: none;
     height: 2.2rem;
     width: 8rem !important;
-    border-radius: .3rem;
+    border-radius: 2rem !important;
     color: #fff;
     font-size: 11px;
 }
@@ -77,7 +81,7 @@
 }
 
 .dialog-confirm-button{
-    background-color: #61eb34 !important;
+    background-color: var(--first-color) !important;
 }
 
 .dialog-cancel-button{
@@ -116,4 +120,50 @@
 
 .error-message{
     color: #d32727;
+}
+
+.input-fact-container{
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+.custom-select{
+    padding: .4rem;
+    border: 2px solid var(--first-color);
+    border-radius: 1rem 0 0 1rem;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.input-group{
+    display: flex;
+    justify-content: center;
+}
+
+.input-group-text{
+    padding: .5rem;
+    border-radius: 0rem 1rem 1rem 0;
+    background-color: var(--first-color);
+    color: #ffff;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.form-control.factInput-error-show{
+    border-bottom: 1px solid red;
+}
+
+.error-message{
+    display: none;
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.error-message.input-error{
+    display: block;
 }

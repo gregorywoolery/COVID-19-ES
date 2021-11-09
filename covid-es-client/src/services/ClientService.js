@@ -32,10 +32,10 @@ export const DiagnosePatient = async (patient, setConfirmLoading, setDialogSucce
 }
 
 
-export const AddFact = async (factType, factOperand, variant, symptomType, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
+export const AddSymptomsFact = async (fact, variant, symptomType, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
     try {
         await axinstance
-        .post(`/api/facts`, {"type": factType, "fact": factOperand, "variant": variant, "symtomType": symptomType})
+        .post(`/api/facts`, {"type": "symptom", "fact": fact, "variant": variant, "symtomType": symptomType})
         .then(()  => {
             setConfirmLoading(false);
             setDialogSuccess(true);
@@ -45,6 +45,21 @@ export const AddFact = async (factType, factOperand, variant, symptomType, setCo
         setDialogFailed(true);
     }
 }
+
+export const AddPrecautionFact = async (fact, precautionType, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
+    try {
+        await axinstance
+        .post(`/api/facts`, {"type": "precaution", "fact": fact, "precautionType": precautionType})
+        .then(()  => {
+            setConfirmLoading(false);
+            setDialogSuccess(true);
+        })
+    } catch (error) {
+        setConfirmLoading(false);
+        setDialogFailed(true);
+    }
+}
+
 
 export const GetVariants = async (setVariantList) =>{
     try {

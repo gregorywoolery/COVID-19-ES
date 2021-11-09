@@ -334,27 +334,32 @@ def GetVariants():
 
 
 def AddNewFact(factParam):
-    consult_covid_system()
-
-    # query = ''
-    # factType = factParam['type']
-    # fact = factParam['fact']
-    # variant = factParam['variant']
-    # symptomType = factParam['symtomType']
-
-    # if(factType == "symptoms"):
-    #     query = f"symptoms_type_variant(_, _, {fact})"
-    # elif(factType == "precautions"):
-    #     query = f"covid_precautions({})"
-
-    # query_result = list(prolog.query(query, maxresult=1))
-
     print(factParam)
-    # if fact['factType'] == "countries":
-    #     assertion = f"covidCountries({fact['factOperand']})"
+    if(factParam['type'] == "precaution"):
+        HandlePrecautionFact(factParam)
+    if(factParam['type'] == "symptom"):
+        HandleSymptomFact(factParam)
 
-    # print(assertion)
-    # query = prolog.asserta(assertion)
+
+def HandlePrecautionFact(precautionFact):
+    consult_covid_system()
+    fact = precautionFact['fact']
+    precautionType = precautionFact['precautionType']
+    # # precautionExistquery = f'precaution_exist(Fact)'
+    # # query_result = list(prolog.query(precautionExistquery))
+    # # print(query_result)
+
+    assertionFact = f'covid_precautions("{fact}")'
+    print(assertionFact)
+
+    # prolog.asserta(assertion=assertionFact)
+
+
+def HandleSymptomFact(symptomFact):
+    fact = symptomFact['fact']
+    # symptomType = symptomFact['symtomType']
+    # symptomExistquery = f"covid_precautions({fact})"
+    # query = f"symptoms_type_variant(_, _, {fact})"
 
 
 def consult_covid_system():

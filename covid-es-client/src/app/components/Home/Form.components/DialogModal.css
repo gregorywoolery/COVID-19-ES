@@ -81,7 +81,7 @@
 }
 
 .dialog-confirm-button{
-    background-color: #61eb34 !important;
+    background-color: var(--first-color) !important;
 }
 
 .dialog-cancel-button{

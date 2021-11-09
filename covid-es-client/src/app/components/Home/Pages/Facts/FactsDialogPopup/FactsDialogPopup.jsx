@@ -1,13 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
-import SuccessIcon from '../../../../../../../assets/success-accept.svg';
-
+import SuccessIcon from '../../../../../../assets/success-accept.svg';
+import Loading from '../../../Loading.component/Loading.component'
 import './FactsDialogPopup.css'
-import Dropdown from '../../../../Form.components/Dropdown.component/Dropdown.component'
-import Loading from '../../../../Loading.component/Loading.component';
+import Dropdown from '../../../Form.components/Dropdown.component/Dropdown.component';
 
-
-export default function FactsDialogPopup({ headerTitle, content, modalIsOpen, setClosed, actionOnSubmit, isLoading, isError, isSuccess, variantsList, setVariant, factType, setFormField }) {
+export default function FactsDialogPopup({ headerTitle, content, factType, setFormField, modalIsOpen, setClosed, actionOnSubmit, isLoading, isError, isSuccess, variantsList, setVariant }) {
     return (
         <Modal
             isOpen={modalIsOpen}
@@ -17,12 +15,15 @@ export default function FactsDialogPopup({ headerTitle, content, modalIsOpen, se
                     display: 'flex',
                     flexDirection: 'column',
                     height: '30rem',
-                    width: '22rem',
+                    width: '20rem',
                     padding: '0rem',
                     border: 'none',
                     top: '50%',
                     left: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
+                    backgroundColor: '#ffff',
+                    boxShadow: '2px 3px 10px #00000048',
+                    borderRadius: '.5rem'
                 },
                 overlay: {
                     backgroundColor: 'rgba(29, 29, 29, .5)'
@@ -41,17 +42,42 @@ export default function FactsDialogPopup({ headerTitle, content, modalIsOpen, se
                             <div >
                                 <div className="dialog-title">{content}</div>
 
-                                <div>Choose variant</div>
-                                <div className="input-group mb-3">
+                                {
+                                    factType === "symptom" ? (
+                                        <>
+                                            <div className="input-group mb-3">
+                                                <Dropdown variantsList={variantsList} setVariant={setVariant} />
 
-                                    <Dropdown variantsList={variantsList} setVariant={setVariant} />
+                                                <div className="input-group-append">
+                                                    <label className="input-group-text" htmlFor="dropdown-list">Variant</label>
+                                                </div>
+                                            </div>
 
-                                    <div className="input-group-append">
-                                        <label className="input-group-text" htmlFor="dropdown-list">Variant</label>
-                                    </div>
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="exampleInputEmail1" className="form-label">Add Precaution</label>
+                                            <div className="input-group mb-3">
+                                                <select defaultValue="mild" className="custom-select" id="symptomType">
+                                                    <option value="mild">Mild</option>
+                                                    <option value="severe">Severe</option>
+                                                </select>
+                                                <div className="input-group-append">
+                                                    <label className="input-group-text" htmlFor="symptomType">Type</label>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : factType === "precaution" && (
+                                        <div className="input-group mb-3">
+                                            <select defaultValue="long_term" className="custom-select" id="precautionType">
+                                                <option value="long_term">Long Term</option>
+                                                <option value="short_term">Short Term</option>
+                                            </select>
+                                            <div className="input-group-append">
+                                                <label className="input-group-text" htmlFor="precautionType">Type</label>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+
+                                <div className="mb-3 input-fact-container">
+                                    <label htmlFor="exampleInputEmail1" className="form-label">Add {factType}</label>
                                     <input
                                         className="form-control"
                                         type={"text"}
@@ -60,13 +86,16 @@ export default function FactsDialogPopup({ headerTitle, content, modalIsOpen, se
                                             setFormField(e.target.value)
                                         }}
                                         required
+                                        id="factInput"
                                     />
                                     <div id="emailHelp" className="form-text"></div>
                                 </div>
 
                                 <div className="form-update-message">
-                                    <div className="error-message">
-                                        Has already been added.
+                                    <div className="error-message" id="error-message">
+                                        {
+                                            `${factType} needed.`
+                                        }
                                     </div>
                                 </div>
                             </div>

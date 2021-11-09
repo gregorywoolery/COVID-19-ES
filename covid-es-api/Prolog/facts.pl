@@ -7,16 +7,6 @@ covid_variant(mu).
 %Facts: Mild Symptom
 mild_symptom_fact("Typically last about 7-10 days").
 
-%List of covid variants and symptoms
-% covid_variant_symptoms(["difficulty breathing","muscle
-%  aches","congestion","cough","runny nose","headache","fever"], regular).
-
-% covid_variant_symptoms(["chest pain","confusion","dizziness","sore
-%  throat"], delta).
-
-% covid_variant_symptoms(["blurred vision","diarrhea","loss of taste and
-%  smell"], mu).
-
 %Facts: blood pressure check symptoms
 blood_pressure_check_symptoms("blurred vision").
 blood_pressure_check_symptoms("dizziness").
