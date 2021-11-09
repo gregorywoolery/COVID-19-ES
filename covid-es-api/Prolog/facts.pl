@@ -45,4 +45,5 @@ symptoms_type_variant(mild, delta, "dizziness").
 symptoms_type_variant(mild, delta, "sore throat").
 symptoms_type_variant(severe, mu, "blurred vision").
 symptoms_type_variant(mild, mu, "diarrhea").
-symptoms_type_variant(severe, mu, "loss of taste and smell").
+symptoms_type_variant(severe, mu, "loss of taste and smell"). 
+long_term_actions("Quarentine for 14 days").

@@ -8,7 +8,8 @@ from pyswip.easy import Query
 from pyswip_mt import PrologMT
 from smtp_mail import sendMail
 from fileoperations import writePatient, getPatientFromFile, getAllPatientsFromFile
-
+from jinja2 import Template
+from os import path
 
 FACTS_PROLOG_FILE = "Prolog/facts.pl"
 BASE_PROLOG_FILE = "Prolog/patient_diagnosis.pl"
@@ -334,7 +335,6 @@ def GetVariants():
 
 
 def AddNewFact(factParam):
-    print(factParam)
     if(factParam['type'] == "precaution"):
         HandlePrecautionFact(factParam)
     if(factParam['type'] == "symptom"):
@@ -345,21 +345,53 @@ def HandlePrecautionFact(precautionFact):
     consult_covid_system()
     fact = precautionFact['fact']
     precautionType = precautionFact['precautionType']
+
+    # Check if has already been added
     # # precautionExistquery = f'precaution_exist(Fact)'
     # # query_result = list(prolog.query(precautionExistquery))
     # # print(query_result)
 
-    assertionFact = f'covid_precautions("{fact}")'
-    print(assertionFact)
+    # Construct fact to be added in database
+    newPrologFact = ''
+    if(precautionType == "long_term"):
+        newPrologFact = f'long_term_actions("{fact}").'
+    elif(precautionType == "short_term"):
+        newPrologFact = f'short_term_actions("{fact}).'
 
+    # Assert into database
+    # assertionFact = f'covid_precautions("{fact}")'
+    # print(assertionFact)
     # prolog.asserta(assertion=assertionFact)
+
+    if(newPrologFact != ''):
+        HandleAddToProlog(newPrologFact)
 
 
 def HandleSymptomFact(symptomFact):
     fact = symptomFact['fact']
-    # symptomType = symptomFact['symtomType']
-    # symptomExistquery = f"covid_precautions({fact})"
-    # query = f"symptoms_type_variant(_, _, {fact})"
+    symptomType = symptomFact['symtomType']
+    variant = symptomFact['variant']
+
+    newPrologFact = f'symptoms_type_variant({symptomType}, {variant}, "{fact}").'
+
+    # assertionFact = f'covid_precautions("{fact}")'
+    # print(assertionFact)
+    # prolog.asserta(assertion=assertionFact)
+    HandleAddToProlog(newPrologFact)
+
+
+def HandleAddToProlog(fact):
+    # Check if file wasn't already generated
+    if path.exists(FACTS_PROLOG_FILE):
+        # Load pl file as template
+        with open(FACTS_PROLOG_FILE, "r") as f_obj:
+            template = f_obj.read()
+
+        # Generate and write new statements
+        rendered_template = f"{template}\n{fact}"
+
+        with open("Prolog/facts.pl", "w") as f_obj:
+            f_obj.write(rendered_template)
 
 
 def consult_covid_system():
