@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import * as clientService from '../../../../../services/ClientService';
-import _ from 'lodash';
 
 const useFacts = () => {
     const [variantsList, setVariantList] = useState({})

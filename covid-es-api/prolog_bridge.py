@@ -191,13 +191,13 @@ def DiagnosePatient(patient):
         "diastolic": patient['diastolic']
     }
 
-    # patientID = writePatient(patientDiagnosis)
+    patientID = writePatient(patientDiagnosis)
 
     # When finished -> Check if spike
     # CheckIfSpike()
 
     return {
-        "patientID": patientDiagnosis
+        "patientID": patientID
     }
 
 

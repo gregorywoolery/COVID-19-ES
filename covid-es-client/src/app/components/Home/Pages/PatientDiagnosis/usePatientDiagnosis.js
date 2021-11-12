@@ -1,7 +1,6 @@
 import { useState } from "react";
 import * as clientService from '../../../../../services/ClientService'
 import { useHistory } from 'react-router-dom';
-import _ from 'lodash'
 
 const usePatientDiagnosis = (
     setKnownSymptoms,
@@ -64,7 +63,7 @@ const usePatientDiagnosis = (
             inputBoxes[3].classList.remove("show-patient-error")
 
         //Add error message if fields are missing
-        if(firstName == "" || lastName == "" || age == 1 || temperature == 1){
+        if(firstName === "" || lastName === "" || age === 1 || temperature === 1){
             if(firstName === "")
                 inputBoxes[0].classList.add("show-patient-error")
 

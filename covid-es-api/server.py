@@ -44,7 +44,7 @@ def Statistics():
 def AddFacts():
     data = request.get_json()
     FactsValidationSchema(data)
-    AddNewFact(data)
+    # AddNewFact(data)
     return jsonify(data)
 
 
@@ -74,14 +74,14 @@ def GetSymptomsRoute():
 def PatientDiagnosis():
     data = request.get_json()
     data = PatientDiagnosisValidation(data)
-    # patientDiagnosis = DiagnosePatient(data)
-    # return jsonify(patientDiagnosis)
-    return jsonify(data)
+    patientDiagnosis = DiagnosePatient(data)
+    return jsonify(patientDiagnosis)
 
 
+# API Function for retrieving patient Diagnosis information.
+# Call recived patient id which is a number and returns patient diagnosis information
 @app.route("/api/patient")
 def GetPatient():
-
     if(not 'patientid' in request.args):
         abort(400)
 

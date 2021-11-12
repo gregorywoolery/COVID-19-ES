@@ -22,7 +22,7 @@ export const DiagnosePatient = async (patient, setConfirmLoading, setDialogSucce
             setConfirmLoading(false);
             setDialogSuccess(true);
             
-            GoToPatient(data.patientID);
+            // GoToPatient(data.patientID);
         })
         
     }catch(err){

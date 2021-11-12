@@ -1,0 +1,1 @@
+{'firstName': 'Gregory', 'lastName': 'Woolery', 'age': '21', 'covid_exposed': 1, 'temperature': 104, 'blood_presure': 1, 'risk_analysis': 2, 'variant': 'mu', 'symptoms': ['difficulty breathing', 'cough', 'blurred vision'], 'systolic': '40', 'diastolic': '50', 'id': 0}
