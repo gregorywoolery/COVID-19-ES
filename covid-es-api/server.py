@@ -6,9 +6,34 @@ from prolog_bridge import DiagnosePatient, GetStatistics, GetVariants, AddNewFac
 app = Flask(__name__)
 CORS(app)
 
+# Validation Schemas for api
+
+
+def FactsValidationSchema(object):
+    if(not 'type' in object or not 'fact' in object):
+        abort(400)
+    if(object['type'] == "precaution" and not 'precautionType' in object):
+        abort(400)
+    elif(object['type'] == "symptom" and (not 'symtomType' in object or not 'variant' in object)):
+        abort(400)
+    elif(object['type'] != "symptom" and object['type'] != "precaution"):
+        abort(400)
+
+
+def PatientDiagnosisValidation(object):
+    if(not 'patient' in object):
+        abort(400)
+    data = object['patient']
+    if(not 'firstName' in data or not 'lastName' in data
+        or not 'age' in data or not 'covidExposed' in data
+            or not 'temperature' in data or not 'symptoms' in data):
+        abort(400)
+    return data
 
 # API function for getting overall statistics throughout exprt system.
 # Call receives nothing and returns JSON with various statistics.
+
+
 @app.route("/api/statistics")
 def Statistics():
     stats = GetStatistics()
@@ -18,6 +43,7 @@ def Statistics():
 @app.route("/api/facts", methods=["POST"])
 def AddFacts():
     data = request.get_json()
+    FactsValidationSchema(data)
     AddNewFact(data)
     return jsonify(data)
 
@@ -46,13 +72,19 @@ def GetSymptomsRoute():
 # Call receives JSON with Patient Information and returns result.
 @app.route("/api/patient-diagnosis", methods=["POST"])
 def PatientDiagnosis():
-    data = request.get_json()['patient']
-    patientDiagnosis = DiagnosePatient(data)
-    return jsonify(patientDiagnosis)
+    data = request.get_json()
+    data = PatientDiagnosisValidation(data)
+    # patientDiagnosis = DiagnosePatient(data)
+    # return jsonify(patientDiagnosis)
+    return jsonify(data)
 
 
 @app.route("/api/patient")
 def GetPatient():
+
+    if(not 'patientid' in request.args):
+        abort(400)
+
     patientid = request.args.get("patientid")
     patient = GetPatientObj(patientid)
     return jsonify(patient)

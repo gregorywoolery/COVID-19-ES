@@ -1,8 +1,7 @@
 """
 Python function to bridge between the server and the Prolog logic.
 """
-
-from flask import json
+from flask import json, abort
 from flask.json import jsonify
 from pyswip.easy import Query
 from pyswip_mt import PrologMT
@@ -24,7 +23,7 @@ def GetPatientObj(patientid):
 
     patientResponse = getPatientFromFile(int(patientid))
     if patientResponse == '':
-        return {"success": "false"}
+        abort(400)
 
     shortTermActionsQuery = f"covid_precautions(Actions)"
     if(patientResponse['risk_analysis'] > 0):
@@ -140,13 +139,6 @@ def DiagnosePatient(patient):
                 regularSevereCount += 1
 
     # Matrix counting system to determine if patient at risk of Covid
-
-    # covidExposed = patient['covidExposed']
-    # riskAnalysisQuery = f"covid_risk_analysis({covidRisk}, {mildSymptoms}, {regularCovidCount}, {deltaCovidCount}, {muCovidCount}, {covidExposed}, RiskAnalysis)"
-    # riskAnalysisResponse = list(prolog.query(riskAnalysisQuery, maxresult=1))
-    # # riskAnalysis = riskAnalysisResponse[0]['RiskAnalysis']
-    # print(riskAnalysisResponse)
-
     if(mildSymptoms > 4):
         covidRisk += 4
 
@@ -168,9 +160,6 @@ def DiagnosePatient(patient):
 
     if(covidRisk > 14):
         riskAnalysis = 2
-
-    print(riskAnalysis)
-    # print(covidRisk)
 
     # identify_covid_variant
     if(riskAnalysis >= 1):
@@ -202,13 +191,13 @@ def DiagnosePatient(patient):
         "diastolic": patient['diastolic']
     }
 
-    patientID = writePatient(patientDiagnosis)
+    # patientID = writePatient(patientDiagnosis)
 
     # When finished -> Check if spike
     # CheckIfSpike()
 
     return {
-        "patientID": patientID
+        "patientID": patientDiagnosis
     }
 
 
@@ -226,7 +215,6 @@ def CheckIfSpike():
 
 def GetSymptoms():
     consult_covid_system()
-
     query = "symptoms_type_variant(_,_,Symptom)"
     query_result = list(prolog.query(query))
     return query_result
