@@ -6,6 +6,7 @@ import { Chart } from "react-google-charts";
 export default function StatisticsChart({ data }) {
     return (
         <div className="chart-container-single">
+
             <Chart
                 width={'400px'}
                 height={'300px'}

@@ -13,9 +13,7 @@ export default function Patient() {
 
     useEffect(() => {
         clientService.GetPatient(match.params.patientid, setPatient)
-        return () => {
-            setPatient({})
-        }
+        return () => setPatient({})
     }, [])
 
     return (

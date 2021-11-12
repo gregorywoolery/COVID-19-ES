@@ -1,41 +1,68 @@
 .content-container{
     display: flex;
-    align-items: center;
     justify-content: center;
     flex-direction: column;
+    background-color: var(--first-color);
+    border-radius: 2rem;
+    padding: 2rem 2rem 1rem 2rem;
+    margin-bottom: 1rem;
 }
 
 .content-container-header{
-    background-image: url(../../../../../assets/online-doctor.svg);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    z-index: 0;
-    height: 5rem;
-    font-weight: bold;
+    color: #ffffff;
+    font-size: 19px;
+}
+
+.content-container-grid{    
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;    
+}
+
+.icon-container{
+    width: 30%;
+    height: 50%;
+}
+
+.diagnosis-icon{
     width: 100%;
-    background-color: var(--first-color);
-    color: #fff;
-    border-radius: .3rem;
-    padding: 2rem;
+    height: 90%;
 }
 
 .content-container-content{
-    border-left: 3px solid var(--first-color);
-    border-right: 3px solid var(--first-color);
     margin: 1rem 0;
-    border-radius: .3rem;
+    margin-right: 3rem;
+    border-radius: 1rem;
     padding: 2rem;
-    width: 60%;
-    box-shadow: 2px 3px 10px #00000048;
+    width: 50%;
+    box-shadow: 2px 3px 50px #00000048;
+    border: 3px solid #674cd4;
+    background-image: linear-gradient(190deg, rgba(255, 255, 255, 0.603), rgb(255, 255, 255))
+}
+  
+ @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .content-container-content {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+ }
+
+
+.input-container-name{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.input-container-name .input-container{
+    width: 45%;
 }
 
 .form-control{
     border: none;
     border-radius: 0;
-    border-bottom: 1px solid #171717;
+    border-bottom: 2px solid #000000;
 }
 
 .form-control:active{
@@ -62,9 +89,22 @@
 .form-action-buttons button{
     background-color: var(--first-color);
     width: 10rem;
+    border-radius: 2rem;
+    font-size: 13px;
 }
 
-.form-check-label
-{
+.form-check-label{
     text-transform: capitalize;
 }
+
+.error-patient-message{
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: .5rem;
+    display: none;
+}
+
+.error-patient-message.show-patient-error{
+    display: block;
+}   

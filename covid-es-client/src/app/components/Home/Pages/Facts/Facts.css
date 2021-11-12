@@ -35,7 +35,7 @@
     width: 10rem;
     border: 1px solid #ffff;
     box-shadow: 2px 3px 10px #00000048;
-    background-color: #6142da;
+    background-color: rgb(97, 66, 218, .15);
     border-radius: 1rem;
     display: flex;
     justify-content: space-between;
@@ -43,6 +43,7 @@
     margin-right: 2rem;
     padding: 1rem;
     align-items: center;
+    backdrop-filter: blur(10px);
 }
 
 .button-container{

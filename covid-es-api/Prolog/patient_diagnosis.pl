@@ -23,9 +23,12 @@ cal_low_blood_pressure_check(Systolic, Diastolic, Reading):-
     Reading is 0.
 
 precaution_exist(ShortTerm, LongTerm, Precaution):-
-    short_term_actions(ShortTerm),
-    long_term_actions(LongTerm),
+    short_term_actions(ShortTerm);
+    long_term_actions(LongTerm);
     covid_precautions(Precaution).
+
+symptom_exist(Symptom):-
+    symptoms_type_variant(_,_,Symptom).
 
 
 %Rule: Displays short term actions.
@@ -81,3 +84,25 @@ variant_calculations(Postotal,Mu,Delta, Regular, MuPercentage, DeltaPercentage, 
 lowblood_calculations(Bp,Total):-
     Bp is Bp/Total,Bpanswer is Bp*100,
     write('The percentage of patients with low blood pressure: '),write(Bpanswer),write('%').
+
+
+covid_risk_analysis(CovidRisk, MildSymptoms, RegularCovidCount, DeltaCovidCount, MuCovidCount, Exposed, RiskAnalysis):-
+    CovidRisk > 4 -> CovidRisk is CovidRisk + 4;
+    RegularCovidCount >= 3 -> CovidRisk is CovidRisk + 4;
+    DeltaCovidCount > 2 -> CovidRisk is CovidRisk + 10;
+    MuCovidCount > 2 -> CovidRisk is CovidRisk + 10;
+    Exposed == 1 -> CovidRisk is CovidRisk + 3;
+    CovidRisk =< 6 -> RiskAnalysis is 0;
+    CovidRisk > 6 -> RiskAnalysis is 1;
+    CovidRisk > 14 -> RiskAnalysis is 2.
+
+
+covid_variant_select(MuCovidCount, DeltaCovidCount, RegularCovidCount, MuSevereCount, MuMildCount, DeltaSevereCount, DeltaMildCount, Variant):-
+    (MuCovidCount > DeltaCovidCount;
+        MuSevereCount >= 1, MuSevereCount >= DeltaSevereCount;
+        MuMildCount >= 1, MuMildCount >= DeltaMildCount -> Variant is 'mu'),
+    (DeltaCovidCount > MuCovidCount;
+        DeltaSevereCount >= 1, DeltaSevereCount >= MuSevereCount;
+        DeltaMildCount >= 1, DeltaMildCount >= MuMildCount -> Variant is 'delta'),
+    (RegularCovidCount >= 2 -> Variant is 'regular').
+    

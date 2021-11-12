@@ -140,6 +140,13 @@ def DiagnosePatient(patient):
                 regularSevereCount += 1
 
     # Matrix counting system to determine if patient at risk of Covid
+
+    # covidExposed = patient['covidExposed']
+    # riskAnalysisQuery = f"covid_risk_analysis({covidRisk}, {mildSymptoms}, {regularCovidCount}, {deltaCovidCount}, {muCovidCount}, {covidExposed}, RiskAnalysis)"
+    # riskAnalysisResponse = list(prolog.query(riskAnalysisQuery, maxresult=1))
+    # # riskAnalysis = riskAnalysisResponse[0]['RiskAnalysis']
+    # print(riskAnalysisResponse)
+
     if(mildSymptoms > 4):
         covidRisk += 4
 
@@ -163,19 +170,21 @@ def DiagnosePatient(patient):
         riskAnalysis = 2
 
     print(riskAnalysis)
-    print(covidRisk)
+    # print(covidRisk)
 
     # identify_covid_variant
     if(riskAnalysis >= 1):
-        if(muCovidCount >= deltaCovidCount):
+        if(muCovidCount > deltaCovidCount or
+            (muSevereCount >= 1 and muSevereCount >= deltaSereveCount) or
+                (muMildCount >= 1 and muMildCount >= deltaMildCount)):
             variant = 'mu'
-        elif(deltaCovidCount < muCovidCount):
+
+        elif(deltaCovidCount > muCovidCount or
+             (deltaSereveCount >= 1 and deltaSereveCount > muSevereCount) or
+                (deltaMildCount >= 1 and deltaMildCount > muMildCount)):
             variant = 'delta'
-        elif(muSevereCount > deltaSereveCount or muMildCount > deltaMildCount):
-            variant = 'mu'
-        elif(deltaSereveCount > muSevereCount or deltaMildCount > muMildCount):
-            variant = 'delta'
-        elif(regularCovidCount >= 3):
+
+        elif(regularCovidCount >= 2):
             variant = 'regular'
 
     # Write patient to file
@@ -211,7 +220,7 @@ def CheckIfSpike():
         if(patient['risk_analysis'] > 0):
             riskOfCovid += 1
 
-    if(riskOfCovid >= 2):
+    if(riskOfCovid >= 10):
         sendMail()
 
 
@@ -228,15 +237,11 @@ def GetStatistics():
     patients = getAllPatientsFromFile()
     totalPatients = len(patients)
 
-    patientAtRisk = 0
-    patientNoneRisk = 0
+    patientAtRisk = patientNoneRisk = 0
+    deltaVariantCount = muVariantCount = regularCount = 0
+    mildCount = severeCount = 0
+    NoneRiskPercentage = RiskPercentage = ServerePercentage = MildPercentage = MuPercentage = DeltaPercentage = RegularPercentage = 0
 
-    deltaVariantCount = 0
-    muVariantCount = 0
-    regularCount = 0
-
-    mildCount = 0
-    severeCount = 0
     # Patients At Risk vs Not At Risk
     for patient in patients:
         if(patient['variant'] == "mu"):
@@ -268,26 +273,26 @@ def GetStatistics():
         if(severeType == True):
             severeCount += 1
 
-    print(mildCount)
+    # To avoid diviing by zero: If there are no patients then skip calculation step
+    if patients != []:
+        RiskCalulationQuery = f'pos_neg_calculation({totalPatients},{patientAtRisk},{patientNoneRisk},RiskPercentaage, NoneRiskPercentage)'
+        RiskCalulationResponse = list(
+            prolog.query(RiskCalulationQuery, maxresult=1))
+        RiskPercentage = RiskCalulationResponse[0]['RiskPercentaage']
+        NoneRiskPercentage = RiskCalulationResponse[0]['NoneRiskPercentage']
 
-    RiskCalulationQuery = f'pos_neg_calculation({totalPatients},{patientAtRisk},{patientNoneRisk},RiskPercentaage, NoneRiskPercentage)'
-    RiskCalulationResponse = list(
-        prolog.query(RiskCalulationQuery, maxresult=1))
-    RiskPercentage = RiskCalulationResponse[0]['RiskPercentaage']
-    NoneRiskPercentage = RiskCalulationResponse[0]['NoneRiskPercentage']
+        SymptomsTypeCalculationQuery = f"symptoms_type_calculations({totalPatients}, {mildCount}, {severeCount}, MildPercentage, ServerePercentage)"
+        SymptomsTypeCalculationResponse = list(
+            prolog.query(SymptomsTypeCalculationQuery, maxresult=1))
+        MildPercentage = SymptomsTypeCalculationResponse[0]['MildPercentage']
+        ServerePercentage = SymptomsTypeCalculationResponse[0]['ServerePercentage']
 
-    SymptomsTypeCalculationQuery = f"symptoms_type_calculations({totalPatients}, {mildCount}, {severeCount}, MildPercentage, ServerePercentage)"
-    SymptomsTypeCalculationResponse = list(
-        prolog.query(SymptomsTypeCalculationQuery, maxresult=1))
-    MildPercentage = SymptomsTypeCalculationResponse[0]['MildPercentage']
-    ServerePercentage = SymptomsTypeCalculationResponse[0]['ServerePercentage']
-
-    VariantCalculationQuery = f"variant_calculations({totalPatients}, {muVariantCount}, {deltaVariantCount}, {regularCount}, MuPercentage, DeltaPercentage, RegularPercentage)"
-    VariantCalculationResponse = list(
-        prolog.query(VariantCalculationQuery, maxresult=1))
-    MuPercentage = VariantCalculationResponse[0]['MuPercentage']
-    DeltaPercentage = VariantCalculationResponse[0]['DeltaPercentage']
-    RegularPercentage = VariantCalculationResponse[0]['RegularPercentage']
+        VariantCalculationQuery = f"variant_calculations({totalPatients}, {muVariantCount}, {deltaVariantCount}, {regularCount}, MuPercentage, DeltaPercentage, RegularPercentage)"
+        VariantCalculationResponse = list(
+            prolog.query(VariantCalculationQuery, maxresult=1))
+        MuPercentage = VariantCalculationResponse[0]['MuPercentage']
+        DeltaPercentage = VariantCalculationResponse[0]['DeltaPercentage']
+        RegularPercentage = VariantCalculationResponse[0]['RegularPercentage']
 
     return {
         "Risk": {
@@ -328,6 +333,7 @@ def GetStatistics():
 
 
 def GetVariants():
+    # Gets covid variants and regular virus from Prolog Database
     consult_covid_system()
     query = "covid_variant(Variant)"
     query_result = list(prolog.query(query))
@@ -347,37 +353,66 @@ def HandlePrecautionFact(precautionFact):
     precautionType = precautionFact['precautionType']
 
     # Check if has already been added
-    # # precautionExistquery = f'precaution_exist(Fact)'
-    # # query_result = list(prolog.query(precautionExistquery))
-    # # print(query_result)
+    precautionExistquery = f'precaution_exist("{fact}", "{fact}", "{fact}")'
+    query_result = bool(list(prolog.query(precautionExistquery)))
+
+    if(query_result == True):
+        # throw error
+        print(query_result)
 
     # Construct fact to be added in database
-    newPrologFact = ''
+    newPrologFact = ""
     if(precautionType == "long_term"):
-        newPrologFact = f'long_term_actions("{fact}").'
+        newPrologFact = f"long_term_actions(\"{fact}\")"
     elif(precautionType == "short_term"):
-        newPrologFact = f'short_term_actions("{fact}).'
+        newPrologFact = f"short_term_actions(\"{fact}\")"
 
-    # Assert into database
-    # assertionFact = f'covid_precautions("{fact}")'
-    # print(assertionFact)
-    # prolog.asserta(assertion=assertionFact)
+    # Assert fact into database
+    # assertionFact = ('\"' + newPrologFact + '\"').encode('utf-8')
+    # prolog.assertz(assertionFact)
 
+    # Place fact in prolog file
     if(newPrologFact != ''):
         HandleAddToProlog(newPrologFact)
 
 
 def HandleSymptomFact(symptomFact):
+    consult_covid_system()
+
     fact = symptomFact['fact']
     symptomType = symptomFact['symtomType']
     variant = symptomFact['variant']
 
+    # Check if symptom exist
+    symptomExistquery = f'symptom_exist("{fact}")'
+    query_result = bool(list(prolog.query(symptomExistquery)))
+
+    if(query_result == True):
+        # throw error
+        print(query_result)
+
+    # Check if variant exist
+    variantExistquery = f'covid_variant({variant})'
+    query_result = bool(list(prolog.query(variantExistquery)))
+
+    if(query_result == False):
+        # throw error
+        print(query_result)
+
+    if(symptomType != "severe" and symptomType != "mild"):
+        # throw error
+        print(symptomType)
+
+    # Add fact to knowledge base
     newPrologFact = f'symptoms_type_variant({symptomType}, {variant}, "{fact}").'
 
-    # assertionFact = f'covid_precautions("{fact}")'
-    # print(assertionFact)
-    # prolog.asserta(assertion=assertionFact)
-    HandleAddToProlog(newPrologFact)
+    # Assert fact into database
+    # assertionFact = ('\"' + newPrologFact + '\"').encode('utf-8')
+    # prolog.assertz(assertionFact)
+
+    # Place fact in prolog file
+    if(newPrologFact != ''):
+        HandleAddToProlog(newPrologFact)
 
 
 def HandleAddToProlog(fact):

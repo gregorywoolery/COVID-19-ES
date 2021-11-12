@@ -23,7 +23,7 @@ covid_precautions("Stay home if you feel unwell.").
 covid_precautions("Get tested for covid-19. If you show any symptoms").
 
 %Facts: Short term and long term actions for Covid
-short_term_actions("Quarentine for 14 days").
+short_term_actions("Quarantine for 14 days").
 short_term_actions("Keep in touch with your family doctor").
 short_term_actions("Drink a lot of water").
 short_term_actions("Only go to a hospital if you need oxygen").
@@ -45,5 +45,4 @@ symptoms_type_variant(mild, delta, "dizziness").
 symptoms_type_variant(mild, delta, "sore throat").
 symptoms_type_variant(severe, mu, "blurred vision").
 symptoms_type_variant(mild, mu, "diarrhea").
-symptoms_type_variant(severe, mu, "loss of taste and smell"). 
-long_term_actions("Quarentine for 14 days").
+symptoms_type_variant(severe, mu, "loss of taste and smell").

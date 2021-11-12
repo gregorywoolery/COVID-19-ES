@@ -1,0 +1,14 @@
+.form-label{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.form-control{
+    background-color: inherit;
+    height: 2rem;
+}
+
+.form-control:focus{
+    background-color: inherit;
+    transition: none;
+}
