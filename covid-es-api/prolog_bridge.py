@@ -17,38 +17,37 @@ STACK_LIMIT = 4000000000    # Limit to about 30 seconds runtime
 
 prolog = PrologMT()
 
-
+# Function used to get patient from file using patientid
 def GetPatientObj(patientid):
+    # Consults prolog files for making request
     consult_covid_system()
 
+    # Gets patient from file, if none then throw exception
     patientResponse = getPatientFromFile(int(patientid))
     if patientResponse == '':
         abort(400)
 
+    # Query Prolog knowledge base to return precautions, short and long term COVID-19 actions
     shortTermActionsQuery = f"covid_precautions(Actions)"
     if(patientResponse['risk_analysis'] > 0):
         shortTermActionsQuery = f"all_short_term_actions(Actions)"
 
-    shortTermActionsResponse = list(
-        prolog.query(shortTermActionsQuery))
+    # Stores response in list variable for parsing
+    shortTermActionsResponse = list(prolog.query(shortTermActionsQuery))
     shortTermActions = []
     for action in shortTermActionsResponse:
-        shortTermActions.append(
-            action['Actions']
-        )
+        shortTermActions.append(action['Actions'])
 
     longTermActionsQuery = f"all_long_term_actions(Actions)"
-    longTermActionsResponse = list(
-        prolog.query(longTermActionsQuery))
+    longTermActionsResponse = list(prolog.query(longTermActionsQuery))
     longTermActions = []
     for action in longTermActionsResponse:
-        longTermActions.append(
-            action['Actions']
-        )
+        longTermActions.append(action['Actions'])
 
     patientResponse['short_term_actions'] = shortTermActions
     patientResponse['long_term_actions'] = longTermActions
 
+    # Gets covid risk status based on risk analysis variable stored
     patientResponse['risk_note'] = f"{patientResponse['firstName']} is not at risk"
 
     if(patientResponse['risk_analysis'] == 1):
@@ -64,6 +63,8 @@ def GetPatientObj(patientid):
 def DiagnosePatient(patient):
     consult_covid_system()
 
+    # If the symtpms dizziness, fainting or blurred vision were selected the check 
+    # for systolic and diastolic values in patient object
     bloodPressureCheck = 0
     if('dizziness' in patient['symptoms'] or
         'fainting' in patient['symptoms'] or
@@ -71,16 +72,23 @@ def DiagnosePatient(patient):
         systolicValue = patient['systolic']
         diastolicValue = patient['diastolic']
 
+        # Check blood pressure of user by querying Prolog knowledge base.
+        # Result is parsed and stores in vaiable
         bloodPressureQuery = f"cal_low_blood_pressure_check({systolicValue}, {diastolicValue}, Result)"
         bloodPressureResponse = list(
             prolog.query(bloodPressureQuery, maxresult=1))
         bloodPressureCheck = bloodPressureResponse[0]['Result']
 
+    # Queries prolog knowledge base for temperature conversion into Fahrenheit
     patientTemperature = patient['temperature']
     temperatureQuery = f"cal_celsius_to_fahrenheit({patientTemperature}, Result)"
     temperatureResponse = list(prolog.query(temperatureQuery, maxresult=1))
     temperature = temperatureResponse[0]['Result']
 
+    # Section for determining covid-19 status of patient
+    # Uses numbering system to assign covid risk based on
+    # type of variant and level of syptom 
+      
     covidRisk = 0
     mildSymptoms = 0
     severeSymptoms = 0
@@ -99,6 +107,7 @@ def DiagnosePatient(patient):
 
     patientSymptoms = patient['symptoms']
 
+    # Gets all current patient syptoms an performs calculations on determining risk
     for symptom in patientSymptoms:
         variantTypeQuery = f'symptoms_type_variant(Type, Variant, "{symptom}")'
         variantTypeResponse = list(prolog.query(
@@ -161,7 +170,7 @@ def DiagnosePatient(patient):
     if(covidRisk > 14):
         riskAnalysis = 2
 
-    # identify_covid_variant
+    # Identify_covid_variant
     if(riskAnalysis >= 1):
         if(muCovidCount > deltaCovidCount or
             (muSevereCount >= 1 and muSevereCount >= deltaSereveCount) or
@@ -200,8 +209,13 @@ def DiagnosePatient(patient):
         "patientID": patientID
     }
 
-
+# Determines if spike has been shown in covid system.
+# If there are 10 or more patients having a risk of covid then
+# Send email to those in charge of the system 
 def CheckIfSpike():
+    # Gets all patients from file and runs a loop, extracting their risk analysis
+    # Adds to riskOfCovid then makes decision on spike
+
     patients = getAllPatientsFromFile()
     riskOfCovid = 0
 
@@ -213,6 +227,8 @@ def CheckIfSpike():
         sendMail()
 
 
+# Function to get all covid symtpoms from the prolog knowledge base
+# A prolog query is used with _ operations to just recieve the Symptoms
 def GetSymptoms():
     consult_covid_system()
     query = "symptoms_type_variant(_,_,Symptom)"
@@ -220,17 +236,21 @@ def GetSymptoms():
     return query_result
 
 
+# Function to calulate needed statistics from patient covid-19 test records.
 def GetStatistics():
+    # Consults prolog file and recieves all patients from file
     consult_covid_system()
     patients = getAllPatientsFromFile()
     totalPatients = len(patients)
 
+    # Variables will be used to store statisics
     patientAtRisk = patientNoneRisk = 0
     deltaVariantCount = muVariantCount = regularCount = 0
     mildCount = severeCount = 0
     NoneRiskPercentage = RiskPercentage = ServerePercentage = MildPercentage = MuPercentage = DeltaPercentage = RegularPercentage = 0
 
-    # Patients At Risk vs Not At Risk
+    # Goes through lis of patients and adds to each covid variant, at risk and symptom type variables.
+    # Statistics recived will be a percentage of Covid Variants, Patients at risk and symptom type, whether mild or severe.
     for patient in patients:
         if(patient['variant'] == "mu"):
             muVariantCount += 1
@@ -261,6 +281,7 @@ def GetStatistics():
         if(severeType == True):
             severeCount += 1
 
+    # Calculates percentages using prolog queries and result parsing for respective values
     # To avoid diviing by zero: If there are no patients then skip calculation step
     if patients != []:
         RiskCalulationQuery = f'pos_neg_calculation({totalPatients},{patientAtRisk},{patientNoneRisk},RiskPercentaage, NoneRiskPercentage)'
@@ -320,6 +341,7 @@ def GetStatistics():
     }
 
 
+# Function queries prolog knowledge base to get list of covid variants and returns them
 def GetVariants():
     # Gets covid variants and regular virus from Prolog Database
     consult_covid_system()
@@ -328,25 +350,26 @@ def GetVariants():
     return query_result
 
 
+# Function delegates adding of new fact to either precautions or symptoms functions
 def AddNewFact(factParam):
     if(factParam['type'] == "precaution"):
         HandlePrecautionFact(factParam)
     if(factParam['type'] == "symptom"):
         HandleSymptomFact(factParam)
 
-
+# Functions add precaution fact to knowledge base 
 def HandlePrecautionFact(precautionFact):
     consult_covid_system()
     fact = precautionFact['fact']
     precautionType = precautionFact['precautionType']
 
-    # Check if has already been added
+    # Check if fact has already been added using Prolog query
+    # If it has then throw error that it has been added
     precautionExistquery = f'precaution_exist("{fact}", "{fact}", "{fact}")'
     query_result = bool(list(prolog.query(precautionExistquery)))
 
     if(query_result == True):
-        # throw error
-        print(query_result)
+        abort(400)
 
     # Construct fact to be added in database
     newPrologFact = ""
@@ -363,7 +386,7 @@ def HandlePrecautionFact(precautionFact):
     if(newPrologFact != ''):
         HandleAddToProlog(newPrologFact)
 
-
+# Function adds new symptoms to prolog knowledge base
 def HandleSymptomFact(symptomFact):
     consult_covid_system()
 
@@ -371,26 +394,27 @@ def HandleSymptomFact(symptomFact):
     symptomType = symptomFact['symtomType']
     variant = symptomFact['variant']
 
-    # Check if symptom exist
+    # Check if fact has already been added using Prolog query
+    # If it has then throw error that it has been added
     symptomExistquery = f'symptom_exist("{fact}")'
     query_result = bool(list(prolog.query(symptomExistquery)))
 
     if(query_result == True):
-        # throw error
-        print(query_result)
+        abort(400)
 
-    # Check if variant exist
+    # Check if variant recieved exist in prolog knowledge base use a query
+    # If it doesn't exist then throw error 
     variantExistquery = f'covid_variant({variant})'
     query_result = bool(list(prolog.query(variantExistquery)))
 
     if(query_result == False):
-        # throw error
-        print(query_result)
-
+        abort(400)
+    
+    # Check if symptom type is either sever or mild
+    # If it is not then throw error
     if(symptomType != "severe" and symptomType != "mild"):
-        # throw error
-        print(symptomType)
-
+        abort(400)
+        
     # Add fact to knowledge base
     newPrologFact = f'symptoms_type_variant({symptomType}, {variant}, "{fact}").'
 
@@ -402,7 +426,7 @@ def HandleSymptomFact(symptomFact):
     if(newPrologFact != ''):
         HandleAddToProlog(newPrologFact)
 
-
+# Function adds new prolog fact to knowledge base by rewriting the file and adding the new fact
 def HandleAddToProlog(fact):
     # Check if file wasn't already generated
     if path.exists(FACTS_PROLOG_FILE):

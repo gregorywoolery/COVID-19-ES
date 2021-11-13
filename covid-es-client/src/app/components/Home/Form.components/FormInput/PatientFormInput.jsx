@@ -1,5 +1,8 @@
 import React from 'react'
 import './PatientFormInput.css'
+
+
+// Displays input field to user with different settings
 export default function PatientFormInput({ setFormField, fieldName, fieldType }) {
     return (
         <div className="mb-3 input-container">

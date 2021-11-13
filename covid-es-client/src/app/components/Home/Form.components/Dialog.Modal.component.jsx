@@ -4,6 +4,9 @@ import SuccessIcon from '../../../../assets/success-accept.svg';
 import Loading from '../Loading.component/Loading.component'
 import './DialogModal.css'
 
+
+// Used to display a dialog modal where user can make decisions on doing a request or canceling it
+
 export default function DialogModal({ modalIsOpen, setClosed, headerTitle, content, actionOnSubmit, isLoading, isError, isSuccess, successMessage }) {
     return (
         <Modal

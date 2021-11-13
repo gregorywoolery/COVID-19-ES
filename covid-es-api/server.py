@@ -7,8 +7,6 @@ app = Flask(__name__)
 CORS(app)
 
 # Validation Schemas for api
-
-
 def FactsValidationSchema(object):
     if(not 'type' in object or not 'fact' in object):
         abort(400)
@@ -18,7 +16,6 @@ def FactsValidationSchema(object):
         abort(400)
     elif(object['type'] != "symptom" and object['type'] != "precaution"):
         abort(400)
-
 
 def PatientDiagnosisValidation(object):
     if(not 'patient' in object):
@@ -30,21 +27,23 @@ def PatientDiagnosisValidation(object):
         abort(400)
     return data
 
+
+
 # API function for getting overall statistics throughout exprt system.
 # Call receives nothing and returns JSON with various statistics.
-
-
 @app.route("/api/statistics")
 def Statistics():
     stats = GetStatistics()
     return jsonify(stats)
 
 
+# API function for adding facts to the Prolog Knowledge base
+# Recieve facts object and return response if success or not
 @app.route("/api/facts", methods=["POST"])
 def AddFacts():
     data = request.get_json()
     FactsValidationSchema(data)
-    # AddNewFact(data)
+    AddNewFact(data)
     return jsonify(data)
 
 
@@ -60,8 +59,6 @@ def GetFacts():
 
 # API function for getting all covid symptoms.
 # Call reveived nothing and return JSON with COVID-19 symptoms.
-
-
 @app.route("/api/facts/symptoms")
 def GetSymptomsRoute():
     symptoms = GetSymptoms()

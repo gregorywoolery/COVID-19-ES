@@ -1,6 +1,8 @@
 
+// Custom hook to add event listeners and set selected dropdown option
 
 const useDropdown = (setVariant) => {
+    // Sets selected dropdown option
     const dropdownEvent = (event) => {
         var options = event.target.options;
         var selectedIndex = options.selectedIndex;
@@ -11,10 +13,11 @@ const useDropdown = (setVariant) => {
         setVariant(options[selectedIndex].value);
     }
 
+    // Adds event listener to select list
     const dropdownListener = (variantListSelect) => {
         variantListSelect.addEventListener('change', dropdownEvent);
     }
-    
+    // Removes event listener to select list
     const removeDropdownListener = (variantListSelect) => {
         variantListSelect.removeEventListener('change', dropdownEvent);
     }

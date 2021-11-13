@@ -6,6 +6,8 @@ import patient from '../../../assets/high-fever.svg';
 import analytics from '../../../assets/analytics.svg';
 import dashboard from '../../../assets/dashboard.svg';
 
+// Displays side nav on pages.
+// Side nav options allow user to move between screens
 export default function SideNav() {
     return (
         <div className="l-navbar" id="nav-bar">

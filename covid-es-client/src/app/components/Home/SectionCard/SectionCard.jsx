@@ -1,7 +1,9 @@
 import React from 'react'
 import './SectionCard.css'
 
-export default function SectionCard({Title, Icon}) {
+
+// Displays section card on landing page with icon and title
+export default function SectionCard({ Title, Icon }) {
     return (
         <div className="section-card">
             <div className="section-card-title">

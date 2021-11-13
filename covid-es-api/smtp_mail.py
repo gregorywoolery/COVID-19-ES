@@ -1,5 +1,3 @@
-
-
 import smtplib
 from email.message import EmailMessage
 
@@ -25,7 +23,8 @@ msg.add_alternative("""\
 </html>
 """, subtype='html')
 
-
+# Using smtplib in python to send mail to specified emails
+# Function is used to email users about noted spikes in the system.
 def sendMail():
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
