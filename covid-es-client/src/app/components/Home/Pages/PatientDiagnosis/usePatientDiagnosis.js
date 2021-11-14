@@ -2,6 +2,8 @@ import { useState } from "react";
 import * as clientService from '../../../../../services/ClientService'
 import { useHistory } from 'react-router-dom';
 
+
+// Custom hook to be used in patient diagnosis form.
 const usePatientDiagnosis = (
     setKnownSymptoms,
     firstName,

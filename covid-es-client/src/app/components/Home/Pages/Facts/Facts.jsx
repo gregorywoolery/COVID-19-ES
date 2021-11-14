@@ -6,7 +6,7 @@ import symptomIcon from '../../../../../assets/symptom-icon.svg'
 import useFacts from './useFacts'
 import FactsDialogPopup from './FactsDialogPopup/FactsDialogPopup'
 
-
+// Displayss Facts page that allows user to enter new facts and request adding them through the api
 export default function Facts() {
     const {
         showPrecationDialog,

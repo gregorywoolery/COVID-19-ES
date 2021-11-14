@@ -4,6 +4,11 @@ import './Statistics.css'
 import _ from 'lodash'
 import StatisticsChart from './Chart/StatisticsChart';
 
+
+// Displays Statistics page to user
+// "useEffect" hook allows page to request statistics data from api when the page loads
+// If successful, Risk, Variant, Symptoms statistical data is placed in state variable
+// this allows it to be added to the StatsChart component to display Chart to user
 export default function Statistics() {
     const [statsRisk, setStatsRisk] = useState({})
     const [statsVariants, setStatsVariants] = useState({})

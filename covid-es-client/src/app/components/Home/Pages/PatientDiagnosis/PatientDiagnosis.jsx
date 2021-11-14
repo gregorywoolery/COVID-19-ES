@@ -6,6 +6,8 @@ import _ from 'lodash'
 import PatientFormInput from '../../Form.components/FormInput/PatientFormInput'
 import symptomIcon from '../../../../../assets/symptom-icon.svg'
 
+// Display Patient diagnosis form to user
+// "useEffect" hook gets symptoms from api after page loads
 
 export default function PatientDiagnosis() {
     const [knownSymptoms, setKnownSymptoms] = useState({});

@@ -10,9 +10,10 @@ import Thermometer from 'react-thermometer-component'
 //Page to display patient results
 export default function Patient() {
     const [patient, setPatient] = useState({});
+    // Gets patient id from url to use to retrieve user data
     const match = useRouteMatch();
 
-    //When pages loads get user information
+    //When pages loads get user data
     useEffect(() => {
         clientService.GetPatient(match.params.patientid, setPatient)
         return () => setPatient({})

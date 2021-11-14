@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import * as clientService from '../../../../../services/ClientService';
 
+// Custom hook to allow adding facts functionality to page
+// "useEffect" hook used to get variants when facts page loads
 const useFacts = () => {
     const [variantsList, setVariantList] = useState({})
     const [precaution, setPrecaution] = useState('');
@@ -13,6 +15,7 @@ const useFacts = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
 
+    //Closes the facts dialog modal
     const SetDialogClosed = () => {
         setIsOpen(false);
         setDialogFailed(false);
@@ -23,6 +26,7 @@ const useFacts = () => {
         setVariant('regular');
     }
 
+    // Validates the information entered to ensure fields are not missing
     const validationCheck = () => {
         const factInput = document.getElementById("factInput");
         const errorMessage = document.getElementById("error-message");
@@ -40,6 +44,7 @@ const useFacts = () => {
         return 0;
     }
 
+    // Function gets data from fields and makes request to api to add new precaution fact
     const AddNewPrecaution = () => {        
         const validation = validationCheck();
         if(validation === 1)
@@ -58,6 +63,7 @@ const useFacts = () => {
         }, 2000);
     }
 
+    // Function gets data from fields and makes request to api to add new symptom fact
     const AddNewSymptom = () => {
         const validation = validationCheck();
         if(validation === 1)
@@ -80,6 +86,7 @@ const useFacts = () => {
         }, 2000);
     }
 
+    // Allows the user to dynamically set dialog container contents with precaution settings
     const showPrecationDialog = () => {
         const dialogDataSet = {
             title:"New Covid-19 Precautions",
@@ -92,6 +99,7 @@ const useFacts = () => {
         setIsOpen(true)
     }
 
+    // Allows the user to dynamically set dialog container contents with symptoms settings
     const showSymptomDialog = () => {
         const dialogDataSet = {
             title:"New Covid-19 Symptoms",

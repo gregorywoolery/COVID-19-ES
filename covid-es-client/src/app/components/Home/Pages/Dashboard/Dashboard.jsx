@@ -8,13 +8,16 @@ import Card from '../../Card/Card'
 import './Dashboard.css'
 import SectionCard from '../../SectionCard/SectionCard'
 
+// Dashboard page to display landing views. 
+// Card componet used to show admins on the page.
+// SectionCard component used to show sections of interes on the system.
 export default function Dashboard() {
     return (
         <div className="dashboard-container">
             <div className="dashboard-container-header">Team Members</div>
             <div className="dashboard-container-content">
                 <div className="content-cards">
-                    <Card 
+                    <Card
                         Name={"Gregory Woolery"}
                         Icon={maledoctor}
                         Initials={"GW"}
@@ -36,15 +39,15 @@ export default function Dashboard() {
                 <div className="dashboard-container-about">
                     <div className="dashboard-container-header">What you'll see...</div>
                     <div className="section-cards">
-                        <SectionCard 
+                        <SectionCard
                             Title={"Statistics"}
                             Icon={statisticsSectionIcon}
                         />
-                        <SectionCard 
+                        <SectionCard
                             Title={"Patient Diagnosis"}
                             Icon={patientDiagnosisSectionIcon}
                         />
-                        <SectionCard 
+                        <SectionCard
                             Title={"COVID-19 Facts"}
                             Icon={factsIcon}
                         />

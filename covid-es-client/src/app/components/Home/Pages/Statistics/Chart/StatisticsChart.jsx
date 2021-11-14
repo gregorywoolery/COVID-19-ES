@@ -2,6 +2,7 @@ import React from 'react'
 import './StatisticsChart.css'
 import { Chart } from "react-google-charts";
 
+// Displays pie chart with received statistical data
 
 export default function StatisticsChart({ data }) {
     return (
