@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as clientService from '../../../../../services/ClientService'
 import { useHistory } from 'react-router-dom';
-
+import _ from 'lodash'
 
 // Custom hook to be used in patient diagnosis form.
 const usePatientDiagnosis = (
@@ -21,6 +21,7 @@ const usePatientDiagnosis = (
     const [showBloodPressureCheck, setShowBloodPressureCheck] = useState(false)
 
     const history = useHistory();
+    var bloodPressureSymptoms = []
 
     //Closes dialog box
     const SetDialogClosed = () => {
@@ -36,10 +37,8 @@ const usePatientDiagnosis = (
 
         for (var checkBox of checkInputs) {
             checkBox.addEventListener('change', function() {
-                if (this.checked === true){                    
-                    if(this.value === "dizziness" || 
-                        this.value === "fainting" ||
-                        this.value === "blurred vision")   
+                if (this.checked === true){    
+                    if(_.includes(bloodPressureSymptoms, this.value))    
                         setShowBloodPressureCheck(true);
                 }
                 else{
@@ -89,14 +88,11 @@ const usePatientDiagnosis = (
         var hasBloodPressureCheck = false;
 
         for (var checkBox of checkInputs) {
-            if( checkBox.value === "dizziness"  || 
-                checkBox.value === "fainting"   ||
-                checkBox.value === "blurred vision")   
+            if(_.includes(bloodPressureSymptoms, checkBox.value)) 
             {
                 if(checkBox.checked)
                     hasBloodPressureCheck = true;
             }    
-
             setShowBloodPressureCheck(hasBloodPressureCheck)
         }
     }
@@ -132,7 +128,14 @@ const usePatientDiagnosis = (
 
     //Gets list of symptoms from api to display to user
     const GetSymptoms = () => {
-        clientService.GetSymptoms(setKnownSymptoms, addCheckBoxEventListeners);
+        clientService.GetSymptoms(setKnownSymptoms)
+        .then(()=> {
+            clientService.GetBloodPressureSymptoms()
+            .then((response) => {
+                bloodPressureSymptoms = response
+                addCheckBoxEventListeners();
+            })
+        })
     }
 
     //When patient diagnosis is recieved user will be directed to patient
@@ -150,7 +153,8 @@ const usePatientDiagnosis = (
         DiagnosePatient,
         showBloodPressureCheck,
         GetSymptoms,
-        HandleOpenDialog
+        HandleOpenDialog,
+        bloodPressureSymptoms
     }
 }
 

@@ -1,19 +1,40 @@
 import axinstance from "./AxiosService"
 
-// Function used to get all sytems from the api using axios request
-// When successfull, set symptoms to be used in the system and add event listensers
-export const GetSymptoms = async (setKnownSymptoms, addCheckBoxEventListeners) =>{
+// Function used to get all symptems from the api using axios request
+// When successfull, set symptoms to be used in the system
+export const GetSymptoms = async (setKnownSymptoms) =>{
     try {
         await axinstance
         .get('/api/facts/symptoms')
         .then(({data}) => {
             setKnownSymptoms(data);
-            addCheckBoxEventListeners();
         })
     } catch (error) {
         
     }
 }
+
+// Funcition recieves symptoms not relating to blood pressure
+export const GetNoneBloodPressureSymptoms = async (setNoneBloodPressureSymptoms) =>{
+    await axinstance
+    .get(`/api/facts/symptoms/bloodpressure?option=${1}`)
+    .then(({data}) => {
+        setNoneBloodPressureSymptoms(data.symptomList);
+    })
+
+}
+
+// Function recieves blood pressure related symptoms
+export const GetBloodPressureSymptoms = async () =>{
+    const symptoms = await axinstance
+    .get(`/api/facts/symptoms/bloodpressure?option=${0}`)
+    .then(({data}) => {
+        return data.symptomList
+    })
+
+    return symptoms
+}
+
 
 // Function used to request patient diagnosis from api
 // Request sends patient health data and recieved thier id if successfull
@@ -67,6 +88,29 @@ export const AddPrecautionFact = async (fact, precautionType, setConfirmLoading,
         setDialogFailed(true);
     }
 }
+
+// Function used to request adding of precaution to database
+// Request sends blood pressure symptom fact data and returns successful if it has been added
+// If failed then display to user request has failed
+export const AddBloodPressureSymptomsFact = async (fact, setConfirmLoading, setDialogSuccess, setDialogFailed) =>{
+    try {
+        await axinstance
+        .post(`/api/facts`, {"type": "bloodpressure", "fact": fact})
+        .then(()  => {
+            setConfirmLoading(false);
+            setDialogSuccess(true);
+        })
+        setTimeout(() => {
+            window.location.reload();        
+        }, 2000);
+        
+    } catch (error) {
+        setConfirmLoading(false);
+        setDialogFailed(true);
+    }
+}
+
+
 
 // Function request list of variants from api 
 export const GetVariants = async (setVariantList) =>{

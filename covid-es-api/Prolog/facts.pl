@@ -17,7 +17,7 @@ covid_precautions("Maintain a safe distance from others (at least 1 metre), even
 covid_precautions("Wear a mask in public, especially indoors or when physical distancing is not possible.").
 covid_precautions("Choose open, well-ventilated spaces over closed ones. Open a window if indoors.").
 covid_precautions("Clean your hands often. Use soap and water, or an alcohol-based hand rub.").
-covid_precautions("Get vaccinated when it’s your turn. Follow local guidance about vaccination.").
+covid_precautions("Get vaccinated when it is your turn. Follow local guidance about vaccination.").
 covid_precautions("Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.").
 covid_precautions("Stay home if you feel unwell.").
 covid_precautions("Get tested for covid-19. If you show any symptoms").
@@ -46,3 +46,4 @@ symptoms_type_variant(mild, delta, "sore throat").
 symptoms_type_variant(severe, mu, "blurred vision").
 symptoms_type_variant(mild, mu, "diarrhea").
 symptoms_type_variant(severe, mu, "loss of taste and smell").
+blood_pressure_check_symptoms("congestion").

@@ -3,6 +3,7 @@ import './Facts.css'
 import addButton from '../../../../../assets/add.svg'
 import precautionIcon from '../../../../../assets/precaution-icon.svg'
 import symptomIcon from '../../../../../assets/symptom-icon.svg'
+import bloodPressure from '../../../../../assets/blood-bank.svg'
 import useFacts from './useFacts'
 import FactsDialogPopup from './FactsDialogPopup/FactsDialogPopup'
 
@@ -11,6 +12,7 @@ export default function Facts() {
     const {
         showPrecationDialog,
         showSymptomDialog,
+        showBloodPressureDialog,
         dialogData,
         SetDialogClosed,
         dialogSuccess,
@@ -18,7 +20,8 @@ export default function Facts() {
         modalIsOpen,
         confirmLoading,
         variantsList,
-        setVariant
+        setVariant,
+        bloodPressureSymptomList
     } = useFacts()
 
     return (
@@ -47,6 +50,14 @@ export default function Facts() {
                             <img src={addButton} className="addButton" alt="Add_Button" />
                         </div>
                     </div>
+
+                    <div className="slide-single-container" onClick={() => showBloodPressureDialog()}>
+                        <img src={bloodPressure} className="slide-icon" alt="bloodPressureIcon" />
+                        <div className="button-container">
+                            <div className="button-content">BLOOD PRESSURE</div>
+                            <img src={addButton} className="addButton" alt="Add_Button" />
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -66,6 +77,8 @@ export default function Facts() {
 
                 setVariant={setVariant}
                 variantsList={variantsList}
+
+                bloodPressureSymptomList={bloodPressureSymptomList}
             />
         </>
     )

@@ -1,7 +1,7 @@
 from os import error
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
-from prolog_bridge import DiagnosePatient, GetStatistics, GetVariants, AddNewFact, GetPatientObj, GetSymptoms
+from prolog_bridge import DiagnosePatient, GetStatistics, GetVariants, AddNewFact, GetPatientObj, GetSymptoms, GetBloodPressureSymptoms
 
 app = Flask(__name__)
 CORS(app)
@@ -14,7 +14,7 @@ def FactsValidationSchema(object):
         abort(400)
     elif(object['type'] == "symptom" and (not 'symtomType' in object or not 'variant' in object)):
         abort(400)
-    elif(object['type'] != "symptom" and object['type'] != "precaution"):
+    elif(object['type'] != "symptom" and object['type'] != "precaution" and object['type'] != "bloodpressure"):
         abort(400)
 
 def PatientDiagnosisValidation(object):
@@ -62,6 +62,18 @@ def GetFacts():
 @app.route("/api/facts/symptoms")
 def GetSymptomsRoute():
     symptoms = GetSymptoms()
+    return jsonify(symptoms)
+
+# API function for getting all covid symptoms.
+# Call reveived nothing and return JSON with COVID-19 symptoms.
+@app.route("/api/facts/symptoms/bloodpressure")
+def GetBloodPressureSymptomsRoute():
+    if(not 'option' in request.args):
+            abort(400)
+
+    isBloodPressure = request.args.get("option")
+    
+    symptoms = GetBloodPressureSymptoms(isBloodPressure)
     return jsonify(symptoms)
 
 

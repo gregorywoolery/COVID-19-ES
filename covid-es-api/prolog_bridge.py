@@ -161,7 +161,7 @@ def DiagnosePatient(patient):
         covidRisk += 10
 
     if(patient['covidExposed'] == 1):
-        covidRisk += 3
+        covidRisk += 2
 
     # Analyze risk based of how much of a risk
     if(covidRisk > 6):
@@ -234,6 +234,42 @@ def GetSymptoms():
     query = "symptoms_type_variant(_,_,Symptom)"
     query_result = list(prolog.query(query))
     return query_result
+
+# Function to get all covid symtpoms from the prolog knowledge base
+# A prolog query is used with _ operations to just recieve the Symptoms
+def GetBloodPressureSymptoms(isBloodPressure):
+    consult_covid_system()
+    symptomsList = []
+
+    # Get Symptoms from blood pressure check and regular symptoms
+    # With this the symptoms in the blood pressure symptoms can be removed
+    # from regular syptoms list
+    symptomsQuery = "blood_pressure_check_symptoms(BloodPressure)"
+    symptomsResult = list(prolog.query(symptomsQuery))
+    bloodPressureSyptomList = []
+    for symptom in symptomsResult:
+        bloodPressureSyptomList.append(symptom["BloodPressure"])
+
+    if isBloodPressure == '1':
+        symptomsQuery = "symptoms_type_variant(_,_,Symptom)"
+        symptomsResult = list(prolog.query(symptomsQuery))
+        regularSymptomsList = []
+        for symptom in symptomsResult:
+            regularSymptomsList.append(symptom["Symptom"])
+
+        # Remove blood pressure symptoms from list
+        for bloodPressureSymptom in bloodPressureSyptomList:
+            regularSymptomsList.remove(bloodPressureSymptom)
+
+        symptomsList = regularSymptomsList
+    if isBloodPressure == '0':
+        symptomsList = bloodPressureSyptomList
+
+
+    return {
+        "symptomList": symptomsList
+    }
+
 
 
 # Function to calulate needed statistics from patient covid-19 test records.
@@ -356,10 +392,13 @@ def AddNewFact(factParam):
         HandlePrecautionFact(factParam)
     if(factParam['type'] == "symptom"):
         HandleSymptomFact(factParam)
+    if(factParam['type'] == "bloodpressure"):
+        HandleBloodPressureSymptomFact(factParam)
 
 # Functions add precaution fact to knowledge base 
 def HandlePrecautionFact(precautionFact):
     consult_covid_system()
+    
     fact = precautionFact['fact']
     precautionType = precautionFact['precautionType']
 
@@ -425,6 +464,32 @@ def HandleSymptomFact(symptomFact):
     # Place fact in prolog file
     if(newPrologFact != ''):
         HandleAddToProlog(newPrologFact)
+
+
+def HandleBloodPressureSymptomFact(bloodPressureFact):
+    consult_covid_system()
+
+    fact = bloodPressureFact['fact']
+
+    # Check if fact has already been added using Prolog query
+    # If it has then throw error that it has been added
+    symptomExistquery = f'blood_pressure_check_symptoms("{fact}")'
+    query_result = bool(list(prolog.query(symptomExistquery)))
+
+    if(query_result == True):
+        abort(400)
+     
+    # Add fact to knowledge base
+    newPrologFact = f'blood_pressure_check_symptoms("{fact}").'
+
+    # Assert fact into database
+    # assertionFact = ('\"' + newPrologFact + '\"').encode('utf-8')
+    # prolog.assertz(assertionFact)
+
+    # Place fact in prolog file
+    if(newPrologFact != ''):
+        HandleAddToProlog(newPrologFact)
+
 
 # Function adds new prolog fact to knowledge base by rewriting the file and adding the new fact
 def HandleAddToProlog(fact):

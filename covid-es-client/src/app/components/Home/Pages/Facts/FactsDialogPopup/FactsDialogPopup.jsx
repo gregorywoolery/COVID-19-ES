@@ -8,7 +8,7 @@ import _ from 'lodash';
 
 // Modal to show option to add facts to prolog knowledge base.
 // Using react-modal to display Drop-down list and input boxes 
-export default function FactsDialogPopup({ headerTitle, content, factType, setFormField, modalIsOpen, setClosed, actionOnSubmit, isLoading, isError, isSuccess, variantsList, setVariant }) {
+export default function FactsDialogPopup({ headerTitle, content, factType, setFormField, modalIsOpen, setClosed, actionOnSubmit, isLoading, isError, isSuccess, variantsList, setVariant, bloodPressureSymptomList }) {
     return (
         <Modal
             isOpen={modalIsOpen}
@@ -75,7 +75,7 @@ export default function FactsDialogPopup({ headerTitle, content, factType, setFo
                                                         </div>
                                                     </div>
                                                 </>
-                                            ) : factType === "precaution" && (
+                                            ) : factType === "precaution" ? (
                                                 <div className="input-group mb-3">
                                                     <select defaultValue="long_term" className="custom-select" id="precautionType">
                                                         <option value="long_term">Long Term</option>
@@ -85,31 +85,55 @@ export default function FactsDialogPopup({ headerTitle, content, factType, setFo
                                                         <label className="input-group-text" htmlFor="precautionType">Type</label>
                                                     </div>
                                                 </div>
+                                            ) : factType === "blood pressure symptom" && !_.isEmpty(bloodPressureSymptomList) && (
+                                                <>
+                                                    <div>Select one</div>
+                                                    <div className="input-group mb-3">
+                                                        <select defaultValue={bloodPressureSymptomList[0]} className="custom-select" id="bloodPressureSymptom">
+                                                            {
+                                                                bloodPressureSymptomList && (
+                                                                    bloodPressureSymptomList.map((symptom, index) => (
+                                                                        <option value={symptom} key={index + symptom}>{symptom}</option>
+                                                                    ))
+                                                                )
+                                                            }
+                                                        </select>
+                                                        <div className="input-group-append">
+                                                            <label className="input-group-text" htmlFor="precautionType">Symptom</label>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            factType !== "blood pressure symptom" && (
+                                                <>
+                                                    <div className="mb-3 input-fact-container">
+                                                        <label htmlFor="exampleInputEmail1" className="form-label">Add {factType}</label>
+                                                        <input
+                                                            className="form-control"
+                                                            type={"text"}
+                                                            name={`${factType}`}
+                                                            onChange={(e) => {
+                                                                setFormField(e.target.value)
+                                                            }}
+                                                            required
+                                                            id="factInput"
+                                                        />
+                                                        <div id="emailHelp" className="form-text"></div>
+                                                    </div>
+
+                                                    <div className="form-update-message">
+                                                        <div className="error-message" id="error-message">
+                                                            {
+                                                                `${factType} needed.`
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </>
                                             )
                                         }
 
-                                        <div className="mb-3 input-fact-container">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Add {factType}</label>
-                                            <input
-                                                className="form-control"
-                                                type={"text"}
-                                                name={`${factType}`}
-                                                onChange={(e) => {
-                                                    setFormField(e.target.value)
-                                                }}
-                                                required
-                                                id="factInput"
-                                            />
-                                            <div id="emailHelp" className="form-text"></div>
-                                        </div>
-
-                                        <div className="form-update-message">
-                                            <div className="error-message" id="error-message">
-                                                {
-                                                    `${factType} needed.`
-                                                }
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div className="dialog-button-container">

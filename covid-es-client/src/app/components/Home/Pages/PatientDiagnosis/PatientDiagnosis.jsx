@@ -30,7 +30,7 @@ export default function PatientDiagnosis() {
         DiagnosePatient,
         showBloodPressureCheck,
         GetSymptoms,
-        HandleOpenDialog
+        HandleOpenDialog,
     } = usePatientDiagnosis(
         setKnownSymptoms,
         firstName,
@@ -45,8 +45,9 @@ export default function PatientDiagnosis() {
 
     useEffect(() => {
         GetSymptoms();
-        return () => setKnownSymptoms({})
-
+        return () => {
+            setKnownSymptoms({})
+        }
     }, [])
 
 

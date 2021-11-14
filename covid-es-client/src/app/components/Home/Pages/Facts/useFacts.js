@@ -7,7 +7,9 @@ const useFacts = () => {
     const [variantsList, setVariantList] = useState({})
     const [precaution, setPrecaution] = useState('');
     const [symptom, setSymptom] = useState('');
-    const [variant, setVariant] = useState('regular')
+    const [variant, setVariant] = useState('regular');
+    const [bloodPressureSymptom, setBloodPressureSymptom] = useState('');
+    const [bloodPressureSymptomList, setBloodPressureSymptomList] = useState({});
     const [dialogData, setDialogData] = useState({})
 
     const [dialogSuccess, setDialogSuccess] = useState(false);
@@ -86,6 +88,19 @@ const useFacts = () => {
         }, 2000);
     }
 
+    // Function gets data from fields and makes request to api to add new blood pressure symptom fact
+    const AddNewBloodPressureSymptom = () => {
+        setConfirmLoading(true);
+        
+        const symptomsList = document.getElementById("bloodPressureSymptom").options;
+        var selectedIndex = symptomsList.selectedIndex;
+        const newBloodPressureSymptom = symptomsList[selectedIndex].value;
+        
+        setTimeout(() => {
+            clientService.AddBloodPressureSymptomsFact(newBloodPressureSymptom, setConfirmLoading, setDialogSuccess, setDialogFailed);            
+        }, 2000);
+    }
+
     // Allows the user to dynamically set dialog container contents with precaution settings
     const showPrecationDialog = () => {
         const dialogDataSet = {
@@ -112,6 +127,22 @@ const useFacts = () => {
         setIsOpen(true)
     }
 
+    // Allows the user to dynamically set dialog container contents with blood pressure symptoms settings
+    const showBloodPressureDialog = () => {
+        const dialogDataSet = {
+            title:"New Blood Pressure Symptoms",
+            content:"You are entering data for Blood Pressure Check Symptoms",
+            factType:"blood pressure symptom",
+            setFormField:setBloodPressureSymptom,
+            actionOnSubmit:AddNewBloodPressureSymptom
+        }
+        clientService.GetNoneBloodPressureSymptoms(setBloodPressureSymptomList)
+        .catch(()=> {return});
+
+        setDialogData(prevState => dialogDataSet);
+        setIsOpen(true)
+    }
+
     useEffect(() => {
         clientService.GetVariants(setVariantList);
         return () => setVariantList({})
@@ -120,6 +151,7 @@ const useFacts = () => {
     return {
         showPrecationDialog,
         showSymptomDialog,
+        showBloodPressureDialog,
         dialogData,
         SetDialogClosed,
         dialogSuccess,
@@ -127,7 +159,8 @@ const useFacts = () => {
         modalIsOpen,
         confirmLoading,
         variantsList,
-        setVariant
+        setVariant,
+        bloodPressureSymptomList
     }
 }
 

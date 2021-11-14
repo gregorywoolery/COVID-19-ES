@@ -54,6 +54,9 @@ member(X,[X|_]).
 member(X,[_|T]):-
     member(X,T).
 
+get_Symptoms(BloodPressure, Symptoms):-
+    blood_pressure_check_symptoms(BloodPressure),
+    symptoms_type_variant(_,_, Symptoms).
 
 
 %Statistics section
