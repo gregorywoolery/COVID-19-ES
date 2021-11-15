@@ -1,7 +1,7 @@
 from os import error
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
-from prolog_bridge import DiagnosePatient, GetStatistics, GetVariants, AddNewFact, GetPatientObj, GetSymptoms, GetBloodPressureSymptoms
+from prolog_bridge import DiagnosePatient, GetStatistics, GetVariants, AddNewFact, GetPatientObj, GetSymptoms, GetBloodPressureSymptoms, GetPatientList
 
 app = Flask(__name__)
 CORS(app)
@@ -97,6 +97,13 @@ def GetPatient():
     patientid = request.args.get("patientid")
     patient = GetPatientObj(patientid)
     return jsonify(patient)
+
+# API Function for retrieving patients List information.
+# Call recives nothing returns list patient name and ID
+@app.route("/api/patients")
+def GetPatients():
+    patients = GetPatientList()
+    return jsonify(patients)
 
 
 if __name__ == "__main__":

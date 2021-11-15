@@ -140,3 +140,19 @@ export const GetPatient = async (patientID, setPatient) => {
         
     }
 }
+
+// Function gets patient information from the api
+// Request send patient id to api from where, 
+// On succes, a patient object is returned.
+export const GetPatientList = async (setPatientList) => {
+    try {
+        const patients = await axinstance
+        .get(`/api/patients`)
+        .then(({data})=> {
+            return data;
+        });
+        setPatientList(patients)
+    } catch (error) {
+        
+    }
+}

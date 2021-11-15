@@ -5,6 +5,7 @@ import book from '../../../assets/book.svg';
 import patient from '../../../assets/high-fever.svg';
 import analytics from '../../../assets/analytics.svg';
 import dashboard from '../../../assets/dashboard.svg';
+import patientIcon from '../../../assets/patient.svg';
 
 // Displays side nav on pages.
 // Side nav options allow user to move between screens
@@ -31,6 +32,11 @@ export default function SideNav() {
                             <img src={analytics} alt="" className="nav_icon" />
                             <span className="nav_name">Statistics</span>
                         </Link>
+                        <Link to='/Patients' className="nav_link">
+                            <img src={patientIcon} alt="" className="nav_icon" />
+                            <span className="nav_name">Patients</span>
+                        </Link>
+
                     </div>
                 </div>
             </nav>

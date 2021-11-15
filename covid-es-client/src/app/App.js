@@ -10,6 +10,7 @@ import Statistics from './components/Home/Pages/Statistics/Statistics';
 import Modal from 'react-modal';
 import NotFound404 from './components/Home/Pages/NotFound404/NotFound404';
 import Patient from './components/Home/Pages/Patient/Patient';
+import PatientList from './components/Home/Pages/PatientList/PatientList';
 
 // Configures react-modal to #root for html
 Modal.setAppElement('#root');
@@ -28,6 +29,7 @@ function App() {
             <Route exact path={"/Statistics"} component={Statistics}/>
             <Route exact path={"/Patient-Diagnosis"} component={PatientDiagnosis}/>
             <Route exact path={"/Patient-Diagnosis/Patient/:patientid"} component={Patient}/>
+            <Route exact path={"/Patients"} component={PatientList}/>
             <Route exact path={""} component={NotFound404}/>
           </Switch>
         </div>

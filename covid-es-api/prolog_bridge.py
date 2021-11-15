@@ -52,12 +52,24 @@ def GetPatientObj(patientid):
     patientResponse['risk_note'] = f"{patientResponse['firstName']} is not at risk"
 
     if(patientResponse['risk_analysis'] == 1):
-        patientResponse['risk_note'] = f"{patientResponse['firstName']} is at risk"
+        patientResponse['risk_note'] = f"{patientResponse['firstName']} may be at risk"
     if(patientResponse['risk_analysis'] == 2):
         patientResponse['risk_note'] = f"{patientResponse['firstName']} is at serious risk"
 
     return patientResponse
 
+
+def GetPatientList():
+    patients = getAllPatientsFromFile()
+    patientList = []
+    for patient in patients:
+        patientInfo = {
+            "id" : patient['id'],
+            "name": patient["firstName"] + " " + patient["lastName"]
+        }
+        patientList.append(patientInfo)
+
+    return patientList
 
 # Function make decision on whether patient covid 19 state.
 # Recieves patient data and returns diagnosis
