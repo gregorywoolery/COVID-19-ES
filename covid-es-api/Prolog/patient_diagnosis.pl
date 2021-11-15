@@ -89,32 +89,33 @@ lowblood_calculations(Bp,Total):-
     write('The percentage of patients with low blood pressure: '),write(Bpanswer),write('%').
 
 
-% covid_risk_analysis(CovidRisk, MildSymptoms, RegularCovidCount, DeltaCovidCount, MuCovidCount, Exposed, RiskAnalysis, CovidRiskHere):-
-%     % CovidRisk > 4 -> CovidRisk is CovidRisk + 4;
-%     % RegularCovidCount >= 3 -> CovidRisk is CovidRisk + 4;
-%     % DeltaCovidCount > 2 -> CovidRisk is CovidRisk + 10;
-%     % MuCovidCount > 2 -> CovidRisk is CovidRisk + 10;
-%     Exposed == 0 -> CovidRisk = CovidRisk + 3;
-%     CovidRisk =< 6 -> RiskAnalysis is 0;
-%     CovidRisk > 6 -> RiskAnalysis is 1;
-%     CovidRisk > 14 -> RiskAnalysis is 2;
-%     CovidRiskHere = 5.
+covid_risk_analysis(CR, MildSymptoms, RegularCovidCount, DeltaCovidCount, MuCovidCount, Exposed, CovidRisk, RiskAnalysis):-
+    (  MildSymptoms > 4 -> Mild is 4;
+    MildSymptoms =< 4 -> Mild is 0	),
 
+    (RegularCovidCount >= 3 -> Reg is 4;
+    RegularCovidCount < 3 -> Reg is 0	),
 
-% covid_variant_select(MuCovidCount, DeltaCovidCount, RegularCovidCount, MuSevereCount, MuMildCount, DeltaSevereCount, DeltaMildCount, Variant):-
-%     (MuCovidCount > DeltaCovidCount;
-%         MuSevereCount >= 1, MuSevereCount >= DeltaSevereCount;
-%         MuMildCount >= 1, MuMildCount >= DeltaMildCount -> Variant is 'mu'),
-%     (DeltaCovidCount > MuCovidCount;
-%         DeltaSevereCount >= 1, DeltaSevereCount >= MuSevereCount;
-%         DeltaMildCount >= 1, DeltaMildCount >= MuMildCount -> Variant is 'delta'),
-%     (RegularCovidCount >= 2 -> Variant is 'regular').
-    
+    (DeltaCovidCount > 2 ->  Del is 10;
+    DeltaCovidCount =< 2 ->  Del is 0	),
 
-% print(covidRisk)
-% covidExposed = patient['covidExposed']
-% # riskAnalysisQuery = f"covid_risk_analysis({covidRisk}, {mildSymptoms}, {regularCovidCount}, {deltaCovidCount}, {muCovidCount}, {covidExposed}, RiskAnalysis)"
-% riskAnalysisQuery = f"covid_risk_analysis({covidRisk}, {5}, {4}, {3}, {2}, {covidExposed}, RiskAnalysis, CovidRiskHere)"
-% riskAnalysisResponse = list(prolog.query(riskAnalysisQuery, maxresult=1))
-% # riskAnalysis = riskAnalysisResponse[0]['RiskAnalysis']
-% print(riskAnalysisResponse)
+    (MuCovidCount > 2 -> Mu is 10;
+    MuCovidCount =< 2 -> Mu is 0 ),
+
+    (Exposed == 0 -> Expo is 3;
+    Exposed > 0 -> Expo is 0 ),
+
+    CovidRisk is CR + Mild + Reg + Del + Mu + Expo,
+
+    (CovidRisk =< 7 -> RiskAnalysis is 0;
+    CovidRisk > 7,CovidRisk =< 14 -> RiskAnalysis is 1;
+    CovidRisk > 14 -> RiskAnalysis is 2).
+
+covid_variant_select(MuCovidCount, DeltaCovidCount, RegularCovidCount, MuSevereCount, MuMildCount, DeltaSevereCount, DeltaMildCount, Variant):-
+    ((MuCovidCount > DeltaCovidCount);
+        (MuSevereCount >= 1, MuSevereCount >= DeltaSevereCount);
+        (MuMildCount >= 1, MuMildCount >= DeltaMildCount) -> Variant = "mu");
+    ((DeltaCovidCount > MuCovidCount);
+        (DeltaSevereCount >= 1, DeltaSevereCount > MuSevereCount);
+        (DeltaMildCount >= 1, DeltaMildCount > MuMildCount) -> Variant = "delta");
+    (RegularCovidCount >= 2 -> Variant = "regular").    

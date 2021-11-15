@@ -1,3 +1,10 @@
+% In order to assert after prolog load, dynamic is set to these facts.
+:- dynamic short_term_actions/1.
+:- dynamic long_term_actions/1.
+:- dynamic covid_precautions/1.
+:- dynamic symptoms_type_variant/3.
+:- dynamic blood_pressure_check_symptoms/1.
+
 %Facts: Covid Variants
 covid_variant(regular).
 covid_variant(delta).

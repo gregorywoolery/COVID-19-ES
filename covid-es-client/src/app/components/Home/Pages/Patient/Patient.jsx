@@ -53,14 +53,18 @@ export default function Patient() {
                                     height="300"
                                 />
                             </div>
-                            <div className="patient-container-card">
-                                <div>
-                                    Systolic Value: {patient.systolic}
-                                </div>
-                                <div>
-                                    Diastolic Value: {patient.diastolic}
-                                </div>
-                            </div>
+                            {
+                                patient.isBloodPressureCheck && (
+                                    <div className="patient-container-card">
+                                        <div>
+                                            Systolic Value: {patient.systolic}
+                                        </div>
+                                        <div>
+                                            Diastolic Value: {patient.diastolic}
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
 
 

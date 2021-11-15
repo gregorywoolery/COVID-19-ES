@@ -1,6 +1,7 @@
 """
 Python function to bridge between the server and the Prolog logic.
 """
+from typing import ByteString
 from flask import json, abort
 from flask.json import jsonify
 from pyswip.easy import Query
@@ -66,9 +67,17 @@ def DiagnosePatient(patient):
     # If the symtpms dizziness, fainting or blurred vision were selected the check 
     # for systolic and diastolic values in patient object
     bloodPressureCheck = 0
-    if('dizziness' in patient['symptoms'] or
-        'fainting' in patient['symptoms'] or
-       'blurred vision' in patient['symptoms']):
+    isBloodPressureCheck = False
+
+    bloodPressureSymptoms = GetBloodPressureSymptoms('0')['symptomList']
+    for bloodPressureSymptom in bloodPressureSymptoms:
+        symptom = bloodPressureSymptom.decode() # Changes Byte to string to be used in comparison
+        if symptom in patient['symptoms']:
+            isBloodPressureCheck = True
+            break
+
+
+    if(isBloodPressureCheck == True):
         systolicValue = patient['systolic']
         diastolicValue = patient['diastolic']
 
@@ -88,7 +97,6 @@ def DiagnosePatient(patient):
     # Section for determining covid-19 status of patient
     # Uses numbering system to assign covid risk based on
     # type of variant and level of syptom 
-      
     covidRisk = 0
     mildSymptoms = 0
     severeSymptoms = 0
@@ -148,30 +156,18 @@ def DiagnosePatient(patient):
                 regularSevereCount += 1
 
     # Matrix counting system to determine if patient at risk of Covid
-    if(mildSymptoms > 4):
-        covidRisk += 4
-
-    if(regularCovidCount >= 3):
-        covidRisk += 4
-
-    if(deltaCovidCount > 2):
-        covidRisk += 10
-
-    if(muCovidCount > 2):
-        covidRisk += 10
-
-    if(patient['covidExposed'] == 1):
-        covidRisk += 2
-
-    # Analyze risk based of how much of a risk
-    if(covidRisk > 6):
-        riskAnalysis = 1
-
-    if(covidRisk > 14):
-        riskAnalysis = 2
+    covidExposed = patient['covidExposed']
+    riskAnalysisQuery = f"covid_risk_analysis({covidRisk}, {mildSymptoms}, {regularCovidCount}, {deltaCovidCount}, {muCovidCount}, {covidExposed}, CovidRisk, RiskAnalysis)"
+    riskAnalysisResponse = list(prolog.query(riskAnalysisQuery, maxresult=1))
+    riskAnalysis = riskAnalysisResponse[0]['RiskAnalysis']
 
     # Identify_covid_variant
     if(riskAnalysis >= 1):
+        # variantAnalysisQuery = f"covid_variant_select({muCovidCount}, {deltaCovidCount}, {regularCovidCount}, {muSevereCount}, {muMildCount}, {deltaSereveCount}, {deltaMildCount}, Variant)"
+        # variantAnalysisResponse = list(prolog.query(variantAnalysisQuery))
+        # # variant = variantAnalysisResponse[0]['Variant']
+        # print(variantAnalysisResponse)
+
         if(muCovidCount > deltaCovidCount or
             (muSevereCount >= 1 and muSevereCount >= deltaSereveCount) or
                 (muMildCount >= 1 and muMildCount >= deltaMildCount)):
@@ -192,6 +188,7 @@ def DiagnosePatient(patient):
         "age":  patient['age'],
         "covid_exposed": patient['covidExposed'],
         "temperature": temperature,
+        "isBloodPressureCheck": isBloodPressureCheck,
         "blood_presure": bloodPressureCheck,
         "risk_analysis": riskAnalysis,
         "variant": variant,
@@ -292,7 +289,7 @@ def GetStatistics():
             muVariantCount += 1
         elif(patient['variant'] == "delta"):
             deltaVariantCount += 1
-        else:
+        elif(patient['variant'] == "regular"):
             regularCount += 1
 
         if(patient['risk_analysis'] > 0):
@@ -308,14 +305,12 @@ def GetStatistics():
                 prolog.query(symptomTypeQuery, maxresult=1))
             symptomType = symptomTypeResponse[0]['Type']
             if(symptomType == "mild"):
-                mildType = True
+                mildCount += 1
             if(symptomType == "severe"):
-                severeType = True
+                severeCount += 1
 
-        if(mildType == True):
-            mildCount += 1
-        if(severeType == True):
-            severeCount += 1
+    
+    totalRecordedSymptomType = mildCount + severeCount
 
     # Calculates percentages using prolog queries and result parsing for respective values
     # To avoid diviing by zero: If there are no patients then skip calculation step
@@ -326,11 +321,12 @@ def GetStatistics():
         RiskPercentage = RiskCalulationResponse[0]['RiskPercentaage']
         NoneRiskPercentage = RiskCalulationResponse[0]['NoneRiskPercentage']
 
-        SymptomsTypeCalculationQuery = f"symptoms_type_calculations({totalPatients}, {mildCount}, {severeCount}, MildPercentage, ServerePercentage)"
-        SymptomsTypeCalculationResponse = list(
-            prolog.query(SymptomsTypeCalculationQuery, maxresult=1))
-        MildPercentage = SymptomsTypeCalculationResponse[0]['MildPercentage']
-        ServerePercentage = SymptomsTypeCalculationResponse[0]['ServerePercentage']
+        if(totalRecordedSymptomType != 0):
+            SymptomsTypeCalculationQuery = f"symptoms_type_calculations({totalRecordedSymptomType}, {mildCount}, {severeCount}, MildPercentage, ServerePercentage)"
+            SymptomsTypeCalculationResponse = list(
+                prolog.query(SymptomsTypeCalculationQuery, maxresult=1))
+            MildPercentage = SymptomsTypeCalculationResponse[0]['MildPercentage']
+            ServerePercentage = SymptomsTypeCalculationResponse[0]['ServerePercentage']
 
         VariantCalculationQuery = f"variant_calculations({totalPatients}, {muVariantCount}, {deltaVariantCount}, {regularCount}, MuPercentage, DeltaPercentage, RegularPercentage)"
         VariantCalculationResponse = list(
@@ -414,12 +410,11 @@ def HandlePrecautionFact(precautionFact):
     newPrologFact = ""
     if(precautionType == "long_term"):
         newPrologFact = f"long_term_actions(\"{fact}\")"
+        prolog.assertz("long_term_actions(\""+fact+"\")")
+
     elif(precautionType == "short_term"):
         newPrologFact = f"short_term_actions(\"{fact}\")"
-
-    # Assert fact into database
-    # assertionFact = ('\"' + newPrologFact + '\"').encode('utf-8')
-    # prolog.assertz(assertionFact)
+        prolog.assertz("short_term_actions(\""+fact+"\")")
 
     # Place fact in prolog file
     if(newPrologFact != ''):
@@ -456,10 +451,7 @@ def HandleSymptomFact(symptomFact):
         
     # Add fact to knowledge base
     newPrologFact = f'symptoms_type_variant({symptomType}, {variant}, "{fact}").'
-
-    # Assert fact into database
-    # assertionFact = ('\"' + newPrologFact + '\"').encode('utf-8')
-    # prolog.assertz(assertionFact)
+    prolog.assertz("symptoms_type_variant({symptomType}, {variant}, \""+fact+"\")")
 
     # Place fact in prolog file
     if(newPrologFact != ''):
@@ -481,10 +473,7 @@ def HandleBloodPressureSymptomFact(bloodPressureFact):
      
     # Add fact to knowledge base
     newPrologFact = f'blood_pressure_check_symptoms("{fact}").'
-
-    # Assert fact into database
-    # assertionFact = ('\"' + newPrologFact + '\"').encode('utf-8')
-    # prolog.assertz(assertionFact)
+    prolog.assertz("blood_pressure_check_symptoms(\""+fact+"\")")
 
     # Place fact in prolog file
     if(newPrologFact != ''):

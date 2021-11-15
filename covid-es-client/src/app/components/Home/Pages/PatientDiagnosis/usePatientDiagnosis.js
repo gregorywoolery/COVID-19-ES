@@ -62,9 +62,18 @@ const usePatientDiagnosis = (
             inputBoxes[2].classList.remove("show-patient-error")
         if(inputBoxes[3].classList.contains("show-patient-error"))
             inputBoxes[3].classList.remove("show-patient-error")
-
+        
+        if(showBloodPressureCheck){
+            if(inputBoxes[4].classList.contains("show-patient-error"))
+                inputBoxes[4].classList.remove("show-patient-error")        
+            if(inputBoxes[5].classList.contains("show-patient-error"))
+                inputBoxes[5].classList.remove("show-patient-error")        
+        }
+    
         //Add error message if fields are missing
-        if(firstName === "" || lastName === "" || age === 1 || temperature === 1){
+        if(firstName === "" || lastName === "" || age === 1 || temperature === 1 || (
+            showBloodPressureCheck && (systolic === 1 || diastolic === 1)
+        )){
             if(firstName === "")
                 inputBoxes[0].classList.add("show-patient-error")
 
@@ -77,8 +86,16 @@ const usePatientDiagnosis = (
             if(temperature === 1)
                 inputBoxes[3].classList.add("show-patient-error")
 
+            if(showBloodPressureCheck){
+                if(systolic === 1)
+                    inputBoxes[4].classList.add("show-patient-error")
+                if(diastolic === 1)
+                    inputBoxes[5].classList.add("show-patient-error")                    
+            }
             return;
         }
+
+
         setIsOpen(true)
     }
 
