@@ -178,7 +178,7 @@ def DiagnosePatient(patient):
                 (deltaMildCount >= 1 and deltaMildCount > muMildCount)):
             variant = 'delta'
 
-        elif(regularCovidCount >= 2):
+        elif(regularCovidCount >= 1):
             variant = 'regular'
 
     # Write patient to file
@@ -200,7 +200,7 @@ def DiagnosePatient(patient):
     patientID = writePatient(patientDiagnosis)
 
     # When finished -> Check if spike
-    # CheckIfSpike()
+    CheckIfSpike()
 
     return {
         "patientID": patientID
