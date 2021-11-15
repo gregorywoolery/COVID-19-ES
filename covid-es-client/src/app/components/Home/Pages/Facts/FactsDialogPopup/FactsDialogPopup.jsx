@@ -159,7 +159,7 @@ export default function FactsDialogPopup({ headerTitle, content, factType, setFo
                                 </>
                             ) : !isLoading && isError && (
                                 <>
-                                    <div className="dialog-title"> <span>Sorry, error when processing request.</span></div>
+                                    <div className="dialog-title"> <span>Sorry, error when processing request. Duplicate entry.</span></div>
                                     <div className="dialog-button-container dialog-button-container-center">
                                         <button type="button" onClick={() => setClosed()} className="dialog-button dialog-failed-button">Close</button>
                                     </div>

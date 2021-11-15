@@ -409,11 +409,11 @@ def HandlePrecautionFact(precautionFact):
     # Construct fact to be added in database
     newPrologFact = ""
     if(precautionType == "long_term"):
-        newPrologFact = f"long_term_actions(\"{fact}\")"
+        newPrologFact = f"long_term_actions(\"{fact}\")."
         prolog.assertz("long_term_actions(\""+fact+"\")")
 
     elif(precautionType == "short_term"):
-        newPrologFact = f"short_term_actions(\"{fact}\")"
+        newPrologFact = f"short_term_actions(\"{fact}\")."
         prolog.assertz("short_term_actions(\""+fact+"\")")
 
     # Place fact in prolog file

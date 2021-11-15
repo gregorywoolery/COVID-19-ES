@@ -24,8 +24,6 @@ export default function Dropdown({ variantsList, setVariant }) {
 
     return (
         <select defaultValue='regular' name="dropdown-list" className="custom-select" id="dropdown-list">
-            <option >Choose...</option>
-            <option value="all">All</option>
             {
                 variantsList && (
                     variantsList.map((variant) => (
