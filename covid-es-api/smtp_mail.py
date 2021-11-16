@@ -10,7 +10,7 @@ contacts = ['gregorywoolery1@gmail.com']
 msg = EmailMessage()
 msg['Subject'] = 'COVID-19 Spike'
 msg['From'] = 'COVID-19-ES'
-msg['To'] = 'gregorywoolery1@gmail.com'
+msg['To'] = 'doe195816@gmail.com' #Change to email, covert to list to use multiple
 
 msg.set_content('There has been a spike detected from the COVID-ES system!')
 
