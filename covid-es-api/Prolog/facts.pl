@@ -53,4 +53,3 @@ symptoms_type_variant(mild, delta, "sore throat").
 symptoms_type_variant(severe, mu, "blurred vision").
 symptoms_type_variant(mild, mu, "diarrhea").
 symptoms_type_variant(severe, mu, "loss of taste and smell").
-long_term_actions("Keep a 6ft distance when outside.").
